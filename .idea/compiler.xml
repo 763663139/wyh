@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="20200616-springcloud-model" />
+        <module name="20200616-springcloud-mapper" />
+        <module name="20200616-springcloud-provider" />
+        <module name="2020618-springcloud-consumer-ribbon" />
+        <module name="2020618-eureka-6082" />
+        <module name="20200617-eureka-6081" />
+        <module name="20200622-srpingcloud-feign" />
+        <module name="2020618-eureka-6083" />
+        <module name="20200616-springcloud-consumer" />
+        <module name="20200616-springcloud-service" />
+        <module name="2020618-srpingcloud-provider-8083" />
+        <module name="2020618-srpingcloud-provider-8082" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

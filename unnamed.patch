@@ -1,0 +1,2945 @@
+Index: 20200616-springcloud-provider/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-provider/src/main/resources/config/application.properties	(date 1592466873804)
++++ 20200616-springcloud-provider/src/main/resources/config/application.properties	(date 1592466873804)
+@@ -0,0 +1,31 @@
++server.port=8081
++server.servlet.context-path=/
++
++spring.datasource.driver-class-name=com.mysql.jdbc.Driver
++spring.datasource.url=jdbc:mysql://localhost:3306/sys?useSSL=false
++spring.datasource.username=root
++spring.datasource.password=wangyuhang724
++spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
++
++mybatis.type-aliases-package=com.aaa.lee.springcloud.model
++mybatis.mapper-locations=classpath:mapper/*Mapper.xml
++
++#配置eureka的注册中心地址（方便与自己想eureka中注册）
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka02:6082/eureka,http://eureka03:6083/eureka
++
++#配置eureka的实列id（和数据库的主键一样，在同一个集群eureka中是绝对不允许重复的）
++eureka.instance.instance-id=book-insterface-8081
++
++eureka.instance.prefer-ip-address=true
++
++info.author.name=wyh
++info.company.name=AAA
++info.project.description=Test Book Demo
++
++spring.application.name=book-interface
++
++#失效eureka的自我保护机制
++#配置自己向eureka去发送心跳的时间（单位是秒）
++eureka.instance.lease-renewal-interval-in-seconds=5
++#配置eureka最后一次接收到心跳后往后数几秒进行剔除
++eureka.instance.lease-expiration-duration-in-seconds=8
+Index: 20200616-springcloud-management/20200616-springcloud-model/src/main/java/com/aaa/lee/springcloud/model/Sys_config.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-management/20200616-springcloud-model/src/main/java/com/aaa/lee/springcloud/model/Sys_config.java	(date 1592399363764)
++++ 20200616-springcloud-management/20200616-springcloud-model/src/main/java/com/aaa/lee/springcloud/model/Sys_config.java	(date 1592399363764)
+@@ -0,0 +1,19 @@
++package com.aaa.lee.springcloud.model;
++
++import lombok.Data;
++import lombok.experimental.Accessors;
++
++import java.util.Date;
++@Data
++@Accessors(chain = true)
++public class Sys_config {
++    private String variable;
++
++    private String value;
++
++    private Date setTime;
++
++    private String setBy;
++
++
++}
+\ No newline at end of file
+Index: 20200622-srpingcloud-feign/src/main/java/com/aaa/lee/FeginApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200622-srpingcloud-feign/src/main/java/com/aaa/lee/FeginApplication.java	(date 1592791999465)
++++ 20200622-srpingcloud-feign/src/main/java/com/aaa/lee/FeginApplication.java	(date 1592791999465)
+@@ -0,0 +1,19 @@
++package com.aaa.lee;
++
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
++import org.springframework.cloud.openfeign.EnableFeignClients;
++
++/**
++ * @Author：wyh
++ * @Created by:王宇航 on 2020/6/22 10:11
++ ***/
++@EnableFeignClients
++@EnableDiscoveryClient
++@SpringBootApplication
++public class FeginApplication {
++    public static void main(String[] args) {
++        SpringApplication.run(FeginApplication.class,args);
++    }
++}
+Index: 20200616-springcloud-management/20200616-springcloud-mapper/target/classes/mapper/Sys_configMapper.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-management/20200616-springcloud-mapper/target/classes/mapper/Sys_configMapper.xml	(date 1592394466545)
++++ 20200616-springcloud-management/20200616-springcloud-mapper/target/classes/mapper/Sys_configMapper.xml	(date 1592394466545)
+@@ -0,0 +1,39 @@
++<?xml version="1.0" encoding="UTF-8" ?>
++<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
++<mapper namespace="com.aaa.lee.springcloud.mapper.Sys_configMapper" >
++  <resultMap id="BaseResultMap" type="com.aaa.lee.springcloud.model.Sys_config" >
++    <id column="variable" property="variable" jdbcType="VARCHAR" />
++    <result column="value" property="value" jdbcType="VARCHAR" />
++    <result column="set_time" property="setTime" jdbcType="TIMESTAMP" />
++    <result column="set_by" property="setBy" jdbcType="VARCHAR" />
++  </resultMap>
++  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
++    delete from sys_config
++    where variable = #{variable,jdbcType=VARCHAR}
++  </delete>
++  <insert id="insert" parameterType="com.aaa.lee.springcloud.model.Sys_config" >
++    <selectKey resultType="java.lang.String" keyProperty="variable" order="AFTER" >
++      SELECT LAST_INSERT_ID()
++    </selectKey>
++    insert into sys_config (value, set_time, set_by
++      )
++    values (#{value,jdbcType=VARCHAR}, #{setTime,jdbcType=TIMESTAMP}, #{setBy,jdbcType=VARCHAR}
++      )
++  </insert>
++  <update id="updateByPrimaryKey" parameterType="com.aaa.lee.springcloud.model.Sys_config" >
++    update sys_config
++    set value = #{value,jdbcType=VARCHAR},
++      set_time = #{setTime,jdbcType=TIMESTAMP},
++      set_by = #{setBy,jdbcType=VARCHAR}
++    where variable = #{variable,jdbcType=VARCHAR}
++  </update>
++  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
++    select variable, value, set_time, set_by
++    from sys_config
++    where variable = #{variable,jdbcType=VARCHAR}
++  </select>
++  <select id="selectAll" resultMap="BaseResultMap" >
++    select variable, value, set_time, set_by
++    from sys_config
++  </select>
++</mapper>
+\ No newline at end of file
+Index: 20200616-springcloud-management/20200616-springcloud-model/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-management/20200616-springcloud-model/pom.xml	(date 1592272863335)
++++ 20200616-springcloud-management/20200616-springcloud-model/pom.xml	(date 1592272863335)
+@@ -0,0 +1,27 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud-management</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>20200616-springcloud-model</artifactId>
++
++    <dependencies>
++        <dependency>
++            <groupId>org.projectlombok</groupId>
++            <artifactId>lombok</artifactId>
++        </dependency>
++
++        <dependency>
++            <groupId>javax.persistence</groupId>
++            <artifactId>persistence-api</artifactId>
++        </dependency>
++    </dependencies>
++
++
++</project>
+\ No newline at end of file
+Index: 20200616-springcloud-provider/target/classes/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-provider/target/classes/config/application.properties	(date 1592466873804)
++++ 20200616-springcloud-provider/target/classes/config/application.properties	(date 1592466873804)
+@@ -0,0 +1,31 @@
++server.port=8081
++server.servlet.context-path=/
++
++spring.datasource.driver-class-name=com.mysql.jdbc.Driver
++spring.datasource.url=jdbc:mysql://localhost:3306/sys?useSSL=false
++spring.datasource.username=root
++spring.datasource.password=wangyuhang724
++spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
++
++mybatis.type-aliases-package=com.aaa.lee.springcloud.model
++mybatis.mapper-locations=classpath:mapper/*Mapper.xml
++
++#配置eureka的注册中心地址（方便与自己想eureka中注册）
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka02:6082/eureka,http://eureka03:6083/eureka
++
++#配置eureka的实列id（和数据库的主键一样，在同一个集群eureka中是绝对不允许重复的）
++eureka.instance.instance-id=book-insterface-8081
++
++eureka.instance.prefer-ip-address=true
++
++info.author.name=wyh
++info.company.name=AAA
++info.project.description=Test Book Demo
++
++spring.application.name=book-interface
++
++#失效eureka的自我保护机制
++#配置自己向eureka去发送心跳的时间（单位是秒）
++eureka.instance.lease-renewal-interval-in-seconds=5
++#配置eureka最后一次接收到心跳后往后数几秒进行剔除
++eureka.instance.lease-expiration-duration-in-seconds=8
+Index: 2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/controller/BookController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592479885653)
++++ 2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592479885653)
+@@ -0,0 +1,27 @@
++package com.aaa.lee.springcloud.controller;
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.cloud.netflix.ribbon.RibbonClient;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RequestMapping;
++import org.springframework.web.bind.annotation.RestController;
++import org.springframework.web.client.RestTemplate;
++
++import java.awt.print.Book;
++import java.util.List;
++
++/**
++ * @Author：wyh
++ * @Created by:王宇航 on 2020/6/18 14:52
++ ***/
++@RestController
++//@RequestMapping("com.aaa.lee.springcloud.mapper")
++//@RibbonClient(name = "")
++public class BookController {
++    @Autowired
++    private RestTemplate restTemplate;
++    @GetMapping("/all")
++    public List<Book> selectAllBooks(){
++        return restTemplate.getForObject("http://book-interface/all",List.class);
++    }
++}
+Index: 20200617-springcloud-eureka-management/20200617-eureka-6081/target/classes/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/20200617-eureka-6081/target/classes/config/application.properties	(date 1592465837722)
++++ 20200617-springcloud-eureka-management/20200617-eureka-6081/target/classes/config/application.properties	(date 1592465837722)
+@@ -0,0 +1,23 @@
++server.port=6081
++server.servlet.context-path=/
++
++eureka.client.register-with-eureka=false
++
++eureka.client.fetch-registry=false
++
++# eureka的核心配置
++# 单机版
++# eureka.instance.hostname=localhost
++
++# 集群版
++eureka.instance.hostname=eureka01
++
++# 集群版
++eureka.client.service-url.defaultZone=http://eureka02:6082/eureka,http://eureka03:6083/eureka
++
++# 关闭eureka的自我保护机制
++# eureka.server.enable-self-preservation=false
++
++# 失效eureka的自我保护机制(单位是毫秒)
++# 如果长时间不访问eureka，仍然会显示那一行自我保护机制的提示，但是已经失效了
++eureka.server.eviction-interval-timer-in-ms=7000
+\ No newline at end of file
+Index: 2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java	(date 1592479112493)
++++ 2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java	(date 1592479112493)
+@@ -0,0 +1,23 @@
++package com.aaa.lee.springcloud.config;
++
++import com.netflix.loadbalancer.IRule;
++import com.netflix.loadbalancer.RandomRule;
++import org.springframework.cloud.client.loadbalancer.LoadBalanced;
++import org.springframework.context.annotation.Bean;
++import org.springframework.context.annotation.Configuration;
++import org.springframework.web.client.RestTemplate;
++
++
++@Configuration
++public class RestConfig {
++    @Bean
++    //脱离eureka实现负载均衡
++    @LoadBalanced
++    public RestTemplate restTemplate(){
++        return new RestTemplate();
++    }
++    @Bean
++    public IRule minRule(){
++        return new RandomRule();
++    }
++}
+Index: 2020618-srpingcloud-provider-8082/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8082/pom.xml	(date 1592464095009)
++++ 2020618-srpingcloud-provider-8082/pom.xml	(date 1592464095009)
+@@ -0,0 +1,33 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>2020618-srpingcloud-provider-8082</artifactId>
++    <dependencies>
++        <dependency>
++            <groupId>com.aaa.lee.springcloud</groupId>
++            <artifactId>20200616-springcloud-service</artifactId>
++            <version>1.0-SNAPSHOT</version>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-web</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.cloud</groupId>
++            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-actuator</artifactId>
++        </dependency>
++    </dependencies>
++
++</project>
+\ No newline at end of file
+Index: 20200617-springcloud-eureka-management/2020618-eureka-6082/target/classes/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/2020618-eureka-6082/target/classes/config/application.properties	(date 1592465837868)
++++ 20200617-springcloud-eureka-management/2020618-eureka-6082/target/classes/config/application.properties	(date 1592465837868)
+@@ -0,0 +1,8 @@
++server.port=6082
++server.servlet.context-path=/
++eureka.client.register-with-eureka=false
++
++eureka.client.fetch-registry=false
++
++eureka.instance.hostname=eureka02
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka03:6083/eureka
+\ No newline at end of file
+Index: 2020618-springcloud-consumer-ribbon/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-springcloud-consumer-ribbon/src/main/resources/config/application.properties	(date 1592479015725)
++++ 2020618-springcloud-consumer-ribbon/src/main/resources/config/application.properties	(date 1592479015725)
+@@ -0,0 +1,6 @@
++server.port=7082
++server.servlet.context-path=/
++#关闭eureka
++#ribbon.eureka.enabled=false
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka02:6082/eureka,http://eureka03:6083/eureka
++eureka.client.register-with-eureka=false
+\ No newline at end of file
+Index: 2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java	(date 1592463863429)
++++ 2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java	(date 1592463863429)
+@@ -0,0 +1,17 @@
++package com.aaa.lee.springcloud;
++
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
++
++/**
++ * @Author：wyh
++ * @Created by:王宇航 on 2020/6/18 15:03
++ ***/
++@SpringBootApplication
++@EnableDiscoveryClient
++public class ApplicationRun {
++    public static void main(String[] args) {
++        SpringApplication.run(ApplicationRun.class,args);
++    }
++}
+Index: 2020618-srpingcloud-provider-8083/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8083/pom.xml	(date 1592466993497)
++++ 2020618-srpingcloud-provider-8083/pom.xml	(date 1592466993497)
+@@ -0,0 +1,33 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>2020618-srpingcloud-provider-8083</artifactId>
++    <dependencies>
++        <dependency>
++            <groupId>com.aaa.lee.springcloud</groupId>
++            <artifactId>20200616-springcloud-service</artifactId>
++            <version>1.0-SNAPSHOT</version>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-web</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.cloud</groupId>
++            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-actuator</artifactId>
++        </dependency>
++    </dependencies>
++
++</project>
+\ No newline at end of file
+Index: 20200617-springcloud-eureka-management/2020618-eureka-6083/target/classes/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/2020618-eureka-6083/target/classes/config/application.properties	(date 1592466611079)
++++ 20200617-springcloud-eureka-management/2020618-eureka-6083/target/classes/config/application.properties	(date 1592466611079)
+@@ -0,0 +1,8 @@
++server.port=6083
++server.servlet.context-path=/
++
++eureka.client.register-with-eureka=false
++eureka.client.fetch-registry=false
++
++eureka.instance.hostname=eureka03
++eureka.client.service-url.defaultZone=http://eureka02:6082/eureka,http://eureka01:6081/eureka
+\ No newline at end of file
+Index: 20200616-springcloud-management/20200616-springcloud-mapper/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-management/20200616-springcloud-mapper/pom.xml	(date 1592480790218)
++++ 20200616-springcloud-management/20200616-springcloud-mapper/pom.xml	(date 1592480790218)
+@@ -0,0 +1,35 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud-management</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>20200616-springcloud-mapper</artifactId>
++
++    <dependencies>
++        <dependency>
++            <groupId>com.aaa.lee.springcloud</groupId>
++            <artifactId>20200616-springcloud-model</artifactId>
++            <version>1.0-SNAPSHOT</version>
++        </dependency>
++        <dependency>
++            <groupId>mysql</groupId>
++            <artifactId>mysql-connector-java</artifactId>
++        </dependency>  
++        <dependency>
++            <groupId>com.alibaba</groupId>
++            <artifactId>druid</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.mybatis.spring.boot</groupId>
++            <artifactId>mybatis-spring-boot-starter</artifactId>
++        </dependency>
++    </dependencies>
++
++
++</project>
+\ No newline at end of file
+Index: 2020618-springcloud-consumer-ribbon/target/classes/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-springcloud-consumer-ribbon/target/classes/config/application.properties	(date 1592463994797)
++++ 2020618-springcloud-consumer-ribbon/target/classes/config/application.properties	(date 1592463994797)
+@@ -0,0 +1,5 @@
++server.port=7082
++server.servlet.context-path=/
++
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka02:6082/eureka,http://eureka03:6083/eureka
++eureka.client.register-with-eureka=false
+\ No newline at end of file
+Index: 20200622-srpingcloud-feign/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200622-srpingcloud-feign/pom.xml	(date 1592791824106)
++++ 20200622-srpingcloud-feign/pom.xml	(date 1592791824106)
+@@ -0,0 +1,28 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++    <packaging>jar</packaging>
++    <artifactId>20200622-srpingcloud-feign</artifactId>
++    <dependencies>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-web</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.cloud</groupId>
++            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.cloud</groupId>
++            <artifactId>spring-cloud-starter-openfeign</artifactId>
++        </dependency>
++    </dependencies>
++
++</project>
+\ No newline at end of file
+Index: 2020618-srpingcloud-provider-8082/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8082/src/main/resources/config/application.properties	(date 1592464513734)
++++ 2020618-srpingcloud-provider-8082/src/main/resources/config/application.properties	(date 1592464513734)
+@@ -0,0 +1,52 @@
++server.port=8082
++server.servlet.context-path=/
++
++spring.datasource.driver-class-name=com.mysql.jdbc.Driver
++spring.datasource.url=jdbc:mysql://localhost:3306/sys?useSSL=false
++spring.datasource.username=root
++spring.datasource.password=wangyuhang724
++spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
++
++mybatis.type-aliases-package=com.aaa.lee.springcloud.model
++mybatis.mapper-locations=classpath:mapper/*Mapper.xml
++
++# 配置eureka的注册中心地址(方便于自己向eureka中去注册)
++# 在consumer中有一个restTemplate(模拟http协议)--->http://localhost:8081/all
++# 之后就不会再使用真实地址来调用
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka02:6082/eureka,http://eureka03:6083/eureka
++
++# 配置eureka的实例id(和数据库的主键一样，在同一个集群eureka中是绝对不允许重复的)
++# 官方文档中是没有要求限制的，怎么写可以
++# 但是咱们规定一下，这个值必须要体现provider的功能以及provider的端口号
++# 予人玫瑰手有余香
++# 张三正在开发book-provider
++# 李四正在开发order-provider
++# 这么去写其实并不是方便自己，只是让自己队友知道目前自己正在开发什么功能，方便队友操作
++eureka.instance.instance-id=book-interface-8082
++
++# 实际开发中的细节
++# 如果有一天你请假(结婚)--->但是在公司你所负责的provider抛异常了--->可以让同事帮忙处理--->如果你的同时可以直接获取到你服务器的ip地址，就可以直接远程操作修改异常
++# 配置当鼠标悬浮否一个provider的时候，显示的不是localhost，直接显示ip地址
++eureka.instance.prefer-ip-address=true
++
++# 这个时候发现了其实eureka所显示的provider都是一个a标签，但是点进去之后会报错404(这个时候也是springcloud所给程序员提供的一种便利)
++# 当点击a标签的时候，显示的就是provider的开发者，公司名称，provider所提供的功能，provider下所有controller以及调用方法
++# info开头--->剩下的信息你可以随意去编写
++# 如果想要让以下信息生效，就必须要添加jar包(必须要添加actuator的jar包)
++info.author.name=Wyh
++info.company.name=AAA 
++info.project.description=Test Book Demo
++info.fahjhfj.dajhfjahf=fhdskjfhsjhfdjkhf
++
++
++# 虽然已经成功的运行起来了，但是会有一个问题存在Application的值是UNKNOWN
++# 以后consumer就不会再通过ip地址来访问provider了，有了eureka之后，会通过eureka的Application的值来进行访问
++# 除了负载均衡之外，绝对不能重复
++# 如果要实现负载均衡，application.name的值必须要保持一致
++spring.application.name=book-interface
++
++# 失效eureka的自我保护机制
++# 配置自己向eureka去发送心跳的时间(单位是秒)
++eureka.instance.lease-renewal-interval-in-seconds=5
++# 配置在eureka最后一次接收到心跳往后数几秒进行剔除
++eureka.instance.lease-expiration-duration-in-seconds=8
+\ No newline at end of file
+Index: 2020618-srpingcloud-provider-8082/target/classes/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8082/target/classes/config/application.properties	(date 1592464513734)
++++ 2020618-srpingcloud-provider-8082/target/classes/config/application.properties	(date 1592464513734)
+@@ -0,0 +1,52 @@
++server.port=8082
++server.servlet.context-path=/
++
++spring.datasource.driver-class-name=com.mysql.jdbc.Driver
++spring.datasource.url=jdbc:mysql://localhost:3306/sys?useSSL=false
++spring.datasource.username=root
++spring.datasource.password=wangyuhang724
++spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
++
++mybatis.type-aliases-package=com.aaa.lee.springcloud.model
++mybatis.mapper-locations=classpath:mapper/*Mapper.xml
++
++# 配置eureka的注册中心地址(方便于自己向eureka中去注册)
++# 在consumer中有一个restTemplate(模拟http协议)--->http://localhost:8081/all
++# 之后就不会再使用真实地址来调用
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka02:6082/eureka,http://eureka03:6083/eureka
++
++# 配置eureka的实例id(和数据库的主键一样，在同一个集群eureka中是绝对不允许重复的)
++# 官方文档中是没有要求限制的，怎么写可以
++# 但是咱们规定一下，这个值必须要体现provider的功能以及provider的端口号
++# 予人玫瑰手有余香
++# 张三正在开发book-provider
++# 李四正在开发order-provider
++# 这么去写其实并不是方便自己，只是让自己队友知道目前自己正在开发什么功能，方便队友操作
++eureka.instance.instance-id=book-interface-8082
++
++# 实际开发中的细节
++# 如果有一天你请假(结婚)--->但是在公司你所负责的provider抛异常了--->可以让同事帮忙处理--->如果你的同时可以直接获取到你服务器的ip地址，就可以直接远程操作修改异常
++# 配置当鼠标悬浮否一个provider的时候，显示的不是localhost，直接显示ip地址
++eureka.instance.prefer-ip-address=true
++
++# 这个时候发现了其实eureka所显示的provider都是一个a标签，但是点进去之后会报错404(这个时候也是springcloud所给程序员提供的一种便利)
++# 当点击a标签的时候，显示的就是provider的开发者，公司名称，provider所提供的功能，provider下所有controller以及调用方法
++# info开头--->剩下的信息你可以随意去编写
++# 如果想要让以下信息生效，就必须要添加jar包(必须要添加actuator的jar包)
++info.author.name=Wyh
++info.company.name=AAA 
++info.project.description=Test Book Demo
++info.fahjhfj.dajhfjahf=fhdskjfhsjhfdjkhf
++
++
++# 虽然已经成功的运行起来了，但是会有一个问题存在Application的值是UNKNOWN
++# 以后consumer就不会再通过ip地址来访问provider了，有了eureka之后，会通过eureka的Application的值来进行访问
++# 除了负载均衡之外，绝对不能重复
++# 如果要实现负载均衡，application.name的值必须要保持一致
++spring.application.name=book-interface
++
++# 失效eureka的自我保护机制
++# 配置自己向eureka去发送心跳的时间(单位是秒)
++eureka.instance.lease-renewal-interval-in-seconds=5
++# 配置在eureka最后一次接收到心跳往后数几秒进行剔除
++eureka.instance.lease-expiration-duration-in-seconds=8
+\ No newline at end of file
+Index: 2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/controller/BookController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592464318775)
++++ 2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592464318775)
+@@ -0,0 +1,25 @@
++package com.aaa.lee.springcloud.controller;
++
++import com.aaa.lee.springcloud.model.Sys_config;
++import com.aaa.lee.springcloud.service.BookService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RestController;
++
++import java.util.List;
++
++/**
++ * @Author：wyh
++ * @Created by:王宇航 on 2020/6/18 15:09
++ ***/
++@RestController
++public class BookController {
++
++    @Autowired
++    private BookService bookService;
++    @GetMapping("/all")
++    public List<Sys_config> selectAllBooks(){
++        System.out.println("8082");
++        return bookService.selectAllBooks();
++    }
++}
+Index: 2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/ApplicationRun8082.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/ApplicationRun8082.java	(date 1592464926931)
++++ 2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/ApplicationRun8082.java	(date 1592464926931)
+@@ -0,0 +1,19 @@
++package com.aaa.lee.springcloud;
++
++import org.mybatis.spring.annotation.MapperScan;
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
++
++/**
++ * @Author：wyh
++ * @Created by:王宇航 on 2020/6/18 15:09
++ ***/
++@SpringBootApplication
++@MapperScan("com.aaa.lee.springcloud.mapper")
++@EnableDiscoveryClient
++public class ApplicationRun8082 {
++    public static void main(String[] args) {
++        SpringApplication.run(ApplicationRun8082.class,args);
++    }
++}
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pom.xml	(date 1592791513876)
++++ pom.xml	(date 1592791513876)
+@@ -0,0 +1,153 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <modelVersion>4.0.0</modelVersion>
++
++    <groupId>com.aaa.lee.springcloud</groupId>
++    <artifactId>20200616-springcloud</artifactId>
++    <version>1.0-SNAPSHOT</version>
++    <modules>
++        <module>20200616-springcloud-consumer</module>
++        <module>20200616-springcloud-provider</module>
++        <module>20200616-springcloud-management</module>
++        <module>20200617-springcloud-eureka-management</module>
++        <module>2020618-springcloud-consumer-ribbon</module>
++        <module>2020618-srpingcloud-provider-8082</module>
++        <module>2020618-srpingcloud-provider-8083</module>
++        <module>20200622-srpingcloud-feign</module>
++    </modules>
++
++    <!--
++
++        jar:
++            最终把这个项目以jar包的形式存在
++        war:
++            这个项目最终打成war包，必须要依靠外部服务器做依托(tomcat,jboss,jetty(是在maven环境中开发的),weblogic,undertwo....)
++        pom:
++            这个项目只管理jar包，也就是说这个项目就是父级工程
++    -->
++    <packaging>pom</packaging>
++
++    <!--
++
++        dependencyManagement：
++            如果不添加这个标签，就意味着spring-boot-dependencies工程和spring-cloud-dependencies工程中的
++            所有jar包都会自动引入(会造成大量冗余存在)
++
++    -->
++    <dependencyManagement>
++        <dependencies>
++            <!--
++
++                scope:jar包的生效时间
++                    runtime:当项目运行的时候该jar包会加载
++                    provided:在编译的时候这个jar包就会加载
++                    test:在测试阶段这个jar包会加载
++                        ( @Test:Junit4 )也就是说当扫描到Test注解存在的时候该jar包会加载
++                    import:当jar包会导入到项目中的时候就会立即加载
++
++                <type>pom</type>:
++                    标识了该jar包的类型(pom,jar,war)
++            -->
++            <dependency>
++                <groupId>org.springframework.boot</groupId>
++                <artifactId>spring-boot-dependencies</artifactId>
++                <version>2.2.6.RELEASE</version>
++                <type>pom</type>
++                <scope>import</scope>
++            </dependency>
++            <dependency>
++                <groupId>org.springframework.cloud</groupId>
++                <artifactId>spring-cloud-dependencies</artifactId>
++                <version>Hoxton.SR4</version>
++                <type>pom</type>
++                <scope>import</scope>
++            </dependency>
++            <dependency>
++                <groupId>mysql</groupId>
++                <artifactId>mysql-connector-java</artifactId>
++                <version>5.1.47</version>
++            </dependency>
++            <dependency>
++                <groupId>com.alibaba</groupId>
++                <artifactId>druid</artifactId>
++                <version>1.1.20</version>
++            </dependency>
++            <dependency>
++                <groupId>org.mybatis.spring.boot</groupId>
++                <artifactId>mybatis-spring-boot-starter</artifactId>
++                <version>2.1.1</version>
++            </dependency>
++            <!--
++                fastjson包
++            -->
++            <dependency>
++                <groupId>com.fasterxml.jackson.core</groupId>
++                <artifactId>jackson-core</artifactId>
++                <version>2.10.0</version>
++            </dependency>
++
++            <dependency>
++                <groupId>com.fasterxml.jackson.core</groupId>
++                <artifactId>jackson-databind</artifactId>
++                <version>2.10.0</version>
++            </dependency>
++
++            <dependency>
++                <groupId>com.fasterxml.jackson.core</groupId>
++                <artifactId>jackson-annotations</artifactId>
++                <version>2.10.0</version>
++            </dependency>
++
++            <dependency>
++                <groupId>com.alibaba</groupId>
++                <artifactId>fastjson</artifactId>
++                <version>1.2.62</version>
++            </dependency>
++
++            <!-- joda time begin -->
++            <dependency>
++                <groupId>joda-time</groupId>
++                <artifactId>joda-time</artifactId>
++                <version>2.10.5</version>
++            </dependency>
++            <!-- joda time end -->
++
++            <!--
++                @Data
++                @Id
++                @Generate
++                @Table
++                是JPA的注解
++            -->
++            <dependency>
++                <groupId>org.projectlombok</groupId>
++                <artifactId>lombok</artifactId>
++                <version>1.18.10</version>
++            </dependency>
++
++            <dependency>
++                <groupId>javax.persistence</groupId>
++                <artifactId>persistence-api</artifactId>
++                <version>1.0.2</version>
++            </dependency>
++            <dependency>
++                <groupId>io.zipkin.java</groupId>
++                <artifactId>zipkin-server</artifactId>
++                <version>2.12.9</version>
++            </dependency>
++
++            <dependency>
++                <groupId>io.zipkin.java</groupId>
++                <artifactId>zipkin-autoconfigure-ui</artifactId>
++                <version>2.12.9</version>
++            </dependency>
++
++        </dependencies>
++    </dependencyManagement>
++
++
++
++
++</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/vcs.xml	(date 1592813169050)
++++ .idea/vcs.xml	(date 1592813169050)
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++    <mapping directory="$PROJECT_DIR$/../2020618springcloud" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: 2020618-srpingcloud-provider-8083/target/classes/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8083/target/classes/config/application.properties	(date 1592467581956)
++++ 2020618-srpingcloud-provider-8083/target/classes/config/application.properties	(date 1592467581956)
+@@ -0,0 +1,52 @@
++server.port=8083
++server.servlet.context-path=/
++
++spring.datasource.driver-class-name=com.mysql.jdbc.Driver
++spring.datasource.url=jdbc://localhost:3306/sys?useSSL=false
++spring.datasource.username=root
++spring.datasource.password=wangyuhang724
++spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
++
++mybatis.type-aliases-package=com.aaa.lee.springcloud.model
++mybatis.mapper-locations=classpath:mapper/*Mapper.xml
++
++# 配置eureka的注册中心地址(方便于自己向eureka中去注册)
++# 在consumer中有一个restTemplate(模拟http协议)--->http://localhost:8081/all
++# 之后就不会再使用真实地址来调用
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka02:6082/eureka,http://eureka03:6083/eureka
++
++# 配置eureka的实例id(和数据库的主键一样，在同一个集群eureka中是绝对不允许重复的)
++# 官方文档中是没有要求限制的，怎么写可以
++# 但是咱们规定一下，这个值必须要体现provider的功能以及provider的端口号
++# 予人玫瑰手有余香
++# 张三正在开发book-provider
++# 李四正在开发order-provider
++# 这么去写其实并不是方便自己，只是让自己队友知道目前自己正在开发什么功能，方便队友操作
++eureka.instance.instance-id=book-interface-8083
++
++# 实际开发中的细节
++# 如果有一天你请假(结婚)--->但是在公司你所负责的provider抛异常了--->可以让同事帮忙处理--->如果你的同时可以直接获取到你服务器的ip地址，就可以直接远程操作修改异常
++# 配置当鼠标悬浮否一个provider的时候，显示的不是localhost，直接显示ip地址
++eureka.instance.prefer-ip-address=true
++
++# 这个时候发现了其实eureka所显示的provider都是一个a标签，但是点进去之后会报错404(这个时候也是springcloud所给程序员提供的一种便利)
++# 当点击a标签的时候，显示的就是provider的开发者，公司名称，provider所提供的功能，provider下所有controller以及调用方法
++# info开头--->剩下的信息你可以随意去编写
++# 如果想要让以下信息生效，就必须要添加jar包(必须要添加actuator的jar包)
++info.author.name=wyh
++info.company.name=AAA Software EDU
++info.project.description=Test Book Demo
++info.fahjhfj.dajhfjahf=fhdskjfhsjhfdjkhf
++
++
++# 虽然已经成功的运行起来了，但是会有一个问题存在Application的值是UNKNOWN
++# 以后consumer就不会再通过ip地址来访问provider了，有了eureka之后，会通过eureka的Application的值来进行访问
++# 除了负载均衡之外，绝对不能重复
++# 如果要实现负载均衡，application.name的值必须要保持一致
++spring.application.name=book-interface
++
++# 失效eureka的自我保护机制
++# 配置自己向eureka去发送心跳的时间(单位是秒)
++eureka.instance.lease-renewal-interval-in-seconds=5
++# 配置在eureka最后一次接收到心跳往后数几秒进行剔除
++eureka.instance.lease-expiration-duration-in-seconds=8
+\ No newline at end of file
+Index: .idea/$CACHE_FILE$
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/$CACHE_FILE$	(date 1592268794107)
++++ .idea/$CACHE_FILE$	(date 1592268794107)
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectInspectionProfilesVisibleTreeState">
++    <entry key="Project Default">
++      <profile-state>
++        <expanded-state>
++          <State />
++          <State>
++            <id>Android</id>
++          </State>
++          <State>
++            <id>CorrectnessLintAndroid</id>
++          </State>
++          <State>
++            <id>Gradle</id>
++          </State>
++          <State>
++            <id>Kotlin</id>
++          </State>
++          <State>
++            <id>LintAndroid</id>
++          </State>
++          <State>
++            <id>Maven</id>
++          </State>
++          <State>
++            <id>MavenMigrationKotlin</id>
++          </State>
++          <State>
++            <id>MigrationKotlin</id>
++          </State>
++          <State>
++            <id>OSGi</id>
++          </State>
++          <State>
++            <id>Probable bugsGradle</id>
++          </State>
++        </expanded-state>
++      </profile-state>
++    </entry>
++  </component>
++</project>
+\ No newline at end of file
+Index: 20200616-springcloud.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud.iml	(date 1592268811028)
++++ 20200616-springcloud.iml	(date 1592268811028)
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4" />
+\ No newline at end of file
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/.gitignore	(date 1592268805022)
++++ .idea/.gitignore	(date 1592268805022)
+@@ -0,0 +1,0 @@
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/compiler.xml	(date 1592812889800)
++++ .idea/compiler.xml	(date 1592812889800)
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <annotationProcessing>
++      <profile default="true" name="Default" enabled="true" />
++      <profile name="Maven default annotation processors profile" enabled="true">
++        <sourceOutputDir name="target/generated-sources/annotations" />
++        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
++        <outputRelativeToContentRoot value="true" />
++        <module name="20200616-springcloud-model" />
++        <module name="20200616-springcloud-mapper" />
++        <module name="20200616-springcloud-provider" />
++        <module name="2020618-springcloud-consumer-ribbon" />
++        <module name="2020618-eureka-6082" />
++        <module name="20200617-eureka-6081" />
++        <module name="20200622-srpingcloud-feign" />
++        <module name="2020618-eureka-6083" />
++        <module name="20200616-springcloud-consumer" />
++        <module name="20200616-springcloud-service" />
++        <module name="2020618-srpingcloud-provider-8083" />
++        <module name="2020618-srpingcloud-provider-8082" />
++      </profile>
++    </annotationProcessing>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/uiDesigner.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/uiDesigner.xml	(date 1592276991555)
++++ .idea/uiDesigner.xml	(date 1592276991555)
+@@ -0,0 +1,124 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Palette2">
++    <group name="Swing">
++      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
++      </item>
++      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.png" removable="false" auto-create-binding="false" can-attach-label="true">
++        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
++        <initial-values>
++          <property name="text" value="Button" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="RadioButton" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="CheckBox" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="Label" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
++          <preferred-size width="-1" height="20" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
++      </item>
++    </group>
++  </component>
++</project>
+\ No newline at end of file
+Index: 20200617-springcloud-eureka-management/2020618-eureka-6082/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/2020618-eureka-6082/pom.xml	(date 1592465135141)
++++ 20200617-springcloud-eureka-management/2020618-eureka-6082/pom.xml	(date 1592465135141)
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200617-springcloud-eureka-management</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>2020618-eureka-6082</artifactId>
++
++
++</project>
+\ No newline at end of file
+Index: 20200616-springcloud-management/20200616-springcloud-service/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-management/20200616-springcloud-service/pom.xml	(date 1592272983352)
++++ 20200616-springcloud-management/20200616-springcloud-service/pom.xml	(date 1592272983352)
+@@ -0,0 +1,24 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud-management</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>20200616-springcloud-service</artifactId>
++
++    <dependencies>
++        <dependency>
++            <groupId>com.aaa.lee.springcloud</groupId>
++            <artifactId>20200616-springcloud-mapper</artifactId>
++            <version>1.0-SNAPSHOT</version>
++        </dependency>
++
++    </dependencies>
++
++
++</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(date 1592465268352)
++++ .idea/misc.xml	(date 1592465268352)
+@@ -0,0 +1,23 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="JavaScriptSettings">
++    <option name="languageLevel" value="ES6" />
++  </component>
++  <component name="MavenProjectsManager">
++    <option name="originalFiles">
++      <list>
++        <option value="$PROJECT_DIR$/pom.xml" />
++      </list>
++    </option>
++    <option name="ignoredFiles">
++      <set>
++        <option value="$PROJECT_DIR$/20200617-eureka-6081/pom.xml" />
++        <option value="$PROJECT_DIR$/2020618-eureka-6082/pom.xml" />
++      </set>
++    </option>
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/out" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/workspace.xml	(date 1592813169022)
++++ .idea/workspace.xml	(date 1592813169022)
+@@ -0,0 +1,427 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ChangeListManager">
++    <list default="true" id="3b304ec8-b7a4-4b53-a6c8-1595ba1b02b6" name="Default Changelist" comment="">
++      <change afterPath="$PROJECT_DIR$/.idea/$CACHE_FILE$" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/springcloud.iml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/src/main/resources/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/ApplicationRun.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/config/RestConfig.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/target/classes/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/src/main/java/com/aaa/lee/springcloud/mapper/Sys_configMapper.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/src/main/resources/mapper/Sys_configMapper.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/target/classes/META-INF/20200616-springcloud-mapper.kotlin_module" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/target/classes/com/aaa/lee/springcloud/mapper/Sys_configMapper.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/target/classes/mapper/Sys_configMapper.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-model/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-model/src/main/java/com/aaa/lee/springcloud/model/Sys_config.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-model/target/classes/META-INF/20200616-springcloud-model.kotlin_module" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-model/target/classes/com/aaa/lee/springcloud/model/Sys_config.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-service/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-service/src/main/java/com/aaa/lee/springcloud/service/BookService.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-service/target/classes/com/aaa/lee/springcloud/service/BookService.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/src/main/resources/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/target/classes/com/aaa/lee/springcloud/ApplicationRun.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/target/classes/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200616-springcloud.iml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/java/com/aaa/lee/springcloud/ApplicationRun6081.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/resources/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/target/classes/com/aaa/lee/springcloud/ApplicationRun6081.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/target/classes/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/java/com/aaa/lee/springcloud/ApplicationRUn6082.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/resources/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/target/classes/com/aaa/lee/springcloud/ApplicationRUn6082.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/target/classes/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/java/com/aaa/lee/springcloud/ApplicationRun6083.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/resources/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/target/classes/com/aaa/lee/springcloud/ApplicationRun6083.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/target/classes/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200622-srpingcloud-feign/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/20200622-srpingcloud-feign/src/main/java/com/aaa/lee/FeginApplication.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/src/main/resources/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/ApplicationRun.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/config/RestConfig.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/target/classes/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/ApplicationRun8082.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/src/main/resources/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/target/classes/com/aaa/lee/springcloud/ApplicationRun8082.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/target/classes/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/pom.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/ApplicationRun8083.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/src/main/resources/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/target/classes/com/aaa/lee/springcloud/ApplicationRun8083.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/target/classes/config/application.properties" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
++    </list>
++    <option name="SHOW_DIALOG" value="false" />
++    <option name="HIGHLIGHT_CONFLICTS" value="true" />
++    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
++    <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="CodeStyleSettingsInfer">
++    <option name="done" value="true" />
++  </component>
++  <component name="FileTemplateManagerImpl">
++    <option name="RECENT_TEMPLATES">
++      <list>
++        <option value="FxmlFile" />
++        <option value="AnnotationType" />
++        <option value="Class" />
++      </list>
++    </option>
++  </component>
++  <component name="Git.Settings">
++    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++    <option name="WARN_ABOUT_CRLF" value="false" />
++  </component>
++  <component name="MavenImportPreferences">
++    <option name="generalSettings">
++      <MavenGeneralSettings>
++        <option name="localRepository" value="D:\maven\repository" />
++        <option name="mavenHome" value="F:/GamesforExcl/apache-maven-3.5.3" />
++        <option name="userSettingsFile" value="F:\GamesforExcl\apache-maven-3.5.3\conf\settings.xml" />
++      </MavenGeneralSettings>
++    </option>
++    <option name="importingSettings">
++      <MavenImportingSettings>
++        <option name="importAutomatically" value="true" />
++        <option name="jdkForImporter" value="1.8" />
++        <option name="vmOptionsForImporter" value="-Xmx768m" />
++      </MavenImportingSettings>
++    </option>
++  </component>
++  <component name="MavenRunner">
++    <option name="jreName" value="1.8" />
++  </component>
++  <component name="ProjectCodeStyleSettingsMigration">
++    <option name="version" value="1" />
++  </component>
++  <component name="ProjectId" id="1dNc3qNLfT6Hxo28YkfgKNtonre" />
++  <component name="ProjectViewState">
++    <option name="showLibraryContents" value="true" />
++  </component>
++  <component name="PropertiesComponent">
++    <property name="RequestMappingsPanelOrder0" value="0" />
++    <property name="RequestMappingsPanelOrder1" value="1" />
++    <property name="RequestMappingsPanelWidth0" value="75" />
++    <property name="RequestMappingsPanelWidth1" value="75" />
++    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
++    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
++    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
++    <property name="WebServerToolWindowFactoryState" value="false" />
++    <property name="aspect.path.notification.shown" value="true" />
++    <property name="last_opened_file_path" value="$PROJECT_DIR$/../2020618springcloud" />
++    <property name="node.js.detected.package.eslint" value="true" />
++    <property name="node.js.detected.package.tslint" value="true" />
++    <property name="node.js.path.for.package.eslint" value="project" />
++    <property name="node.js.path.for.package.tslint" value="project" />
++    <property name="node.js.selected.package.eslint" value="(autodetect)" />
++    <property name="node.js.selected.package.tslint" value="(autodetect)" />
++    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
++    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
++    <property name="project.structure.last.edited" value="Modules" />
++    <property name="project.structure.proportion" value="0.15" />
++    <property name="project.structure.side.proportion" value="0.2" />
++    <property name="settings.editor.selected.configurable" value="vcs.Git" />
++  </component>
++  <component name="RecentsManager">
++    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
++      <recent name="com.aaa.lee.springcloud" />
++    </key>
++    <key name="CopyFile.RECENT_KEYS">
++      <recent name="D:\Element\springcloud\2020618-srpingcloud-provider-8082\src\main\resources\config" />
++      <recent name="D:\Element\springcloud\20200616-springcloud-management\20200616-springcloud-mapper\src\main\resources\mapper" />
++      <recent name="D:\Workspace\IDEA_Workspace\20200616-springcloud\20200616-springcloud-management\20200616-springcloud-mapper\src\main\resources\mapper" />
++    </key>
++    <key name="CopyClassDialog.RECENTS_KEY">
++      <recent name="com.aaa.lee.springcloud.mapper" />
++      <recent name="com.aaa.lee.springcloud.model" />
++    </key>
++    <key name="CreateClassDialog.RecentsKey">
++      <recent name="20200616-springcloud-management.20200616-springcloud-service.src.main.java.com.aaa.lee.springcloud.service" />
++    </key>
++  </component>
++  <component name="RunDashboard">
++    <option name="configurationTypes">
++      <set>
++        <option value="SpringBootApplicationConfigurationType" />
++      </set>
++    </option>
++  </component>
++  <component name="RunManager" selected="Spring Boot.ApplicationRun">
++    <configuration name="ApplicationRun" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="com.aaa.lee.springcloud.ApplicationRun" />
++      <module name="20200616-springcloud-provider" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration name="ApplicationRun" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
++      <module name="2020618-springcloud-consumer-ribbon" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <option name="SPRING_BOOT_MAIN_CLASS" value="com.aaa.lee.springcloud.ApplicationRun" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration name="ApplicationRun6081" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
++      <module name="20200617-eureka-6081" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <option name="SPRING_BOOT_MAIN_CLASS" value="com.aaa.lee.springcloud.ApplicationRun6081" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration name="ApplicationRun8082" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
++      <module name="2020618-srpingcloud-provider-8082" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <option name="SPRING_BOOT_MAIN_CLASS" value="com.aaa.lee.springcloud.ApplicationRun8082" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration name="ApplicationRun8083" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
++      <module name="2020618-srpingcloud-provider-8083" />
++      <extension name="coverage">
++        <pattern>
++          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
++          <option name="ENABLED" value="true" />
++        </pattern>
++      </extension>
++      <option name="SPRING_BOOT_MAIN_CLASS" value="com.aaa.lee.springcloud.ApplicationRun8083" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <recent_temporary>
++      <list>
++        <item itemvalue="Spring Boot.ApplicationRun" />
++        <item itemvalue="Spring Boot.ApplicationRun6081" />
++        <item itemvalue="Spring Boot.ApplicationRun8083" />
++        <item itemvalue="Application.ApplicationRun" />
++        <item itemvalue="Spring Boot.ApplicationRun8082" />
++      </list>
++    </recent_temporary>
++  </component>
++  <component name="ServiceViewManager">
++    <option name="viewStates">
++      <list>
++        <serviceView>
++          <option name="contentProportion" value="0.2683461" />
++          <treeState>
++            <expand>
++              <path>
++                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
++                <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
++              </path>
++              <path>
++                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
++                <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
++                <item name="Finished" type="7427dc5b:ServiceModel$ServiceGroupNode" />
++              </path>
++            </expand>
++            <select />
++          </treeState>
++        </serviceView>
++      </list>
++    </option>
++  </component>
++  <component name="SvnConfiguration">
++    <configuration>C:\Users\Seven Lee\AppData\Roaming\Subversion</configuration>
++  </component>
++  <component name="TaskManager">
++    <task active="true" id="Default" summary="Default task">
++      <changelist id="3b304ec8-b7a4-4b53-a6c8-1595ba1b02b6" name="Default Changelist" comment="" />
++      <created>1592268794154</created>
++      <option name="number" value="Default" />
++      <option name="presentableId" value="Default" />
++      <updated>1592268794154</updated>
++      <workItem from="1592268796422" duration="7559000" />
++      <workItem from="1592289562665" duration="2135000" />
++      <workItem from="1592291763329" duration="7624000" />
++      <workItem from="1592305265594" duration="5573000" />
++      <workItem from="1592353831852" duration="1616000" />
++      <workItem from="1592375134637" duration="12961000" />
++      <workItem from="1592394091483" duration="5321000" />
++      <workItem from="1592447975106" duration="17000" />
++      <workItem from="1592448008731" duration="123000" />
++      <workItem from="1592461661468" duration="8033000" />
++      <workItem from="1592476447906" duration="4136000" />
++      <workItem from="1592526256390" duration="723000" />
++      <workItem from="1592791394591" duration="1287000" />
++      <workItem from="1592812856152" duration="159000" />
++    </task>
++    <servers />
++  </component>
++  <component name="TypeScriptGeneratedFilesManager">
++    <option name="version" value="1" />
++  </component>
++  <component name="WindowStateProjectService">
++    <state x="77" y="179" key="#Project_Structure" timestamp="1592792005496">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="77" y="179" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1592792005496" />
++    <state x="476" y="96" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592812937042">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592276952587" />
++    <state x="476" y="96" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592812937042" />
++    <state x="1147" y="325" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1592466520242">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="1147" y="325" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1592466520242" />
++    <state x="355" y="279" width="977" height="273" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1592276977568">
++      <screen x="0" y="0" width="1536" height="824" />
++    </state>
++    <state x="355" y="279" width="977" height="273" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592276977568" />
++    <state x="882" y="334" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1592394369183">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="882" y="334" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592394369183" />
++    <state x="827" y="228" key="FileChooserDialogImpl" timestamp="1592813137990">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592273000021" />
++    <state x="827" y="228" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1592813137990" />
++    <state width="1351" height="304" key="GridCell.Tab.0.bottom" timestamp="1592468524509">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
++    <state width="1351" height="304" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524509" />
++    <state width="1351" height="304" key="GridCell.Tab.0.center" timestamp="1592468524509">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
++    <state width="1351" height="304" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524509" />
++    <state width="1351" height="304" key="GridCell.Tab.0.left" timestamp="1592468524509">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120598" />
++    <state width="1351" height="304" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524509" />
++    <state width="1351" height="304" key="GridCell.Tab.0.right" timestamp="1592468524509">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
++    <state width="1351" height="304" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524509" />
++    <state width="1351" height="304" key="GridCell.Tab.1.bottom" timestamp="1592468524510">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.1.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
++    <state width="1351" height="304" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524510" />
++    <state width="1351" height="304" key="GridCell.Tab.1.center" timestamp="1592468524510">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.1.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
++    <state width="1351" height="304" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524510" />
++    <state width="1351" height="304" key="GridCell.Tab.1.left" timestamp="1592468524510">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.1.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
++    <state width="1351" height="304" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524510" />
++    <state width="1351" height="304" key="GridCell.Tab.1.right" timestamp="1592468524510">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.1.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
++    <state width="1351" height="304" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524510" />
++    <state width="1250" height="203" key="GridCell.Tab.2.bottom" timestamp="1592277120600">
++      <screen x="0" y="0" width="1536" height="824" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.2.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120600" />
++    <state width="1250" height="203" key="GridCell.Tab.2.center" timestamp="1592277120600">
++      <screen x="0" y="0" width="1536" height="824" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.2.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120600" />
++    <state width="1250" height="203" key="GridCell.Tab.2.left" timestamp="1592277120599">
++      <screen x="0" y="0" width="1536" height="824" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.2.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
++    <state width="1250" height="203" key="GridCell.Tab.2.right" timestamp="1592277120600">
++      <screen x="0" y="0" width="1536" height="824" />
++    </state>
++    <state width="1250" height="203" key="GridCell.Tab.2.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120600" />
++    <state x="830" y="196" key="SettingsEditor" timestamp="1592813023729">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="830" y="196" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1592813023729" />
++    <state x="640" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1592812862222">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="640" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592812862222" />
++    <state x="607" y="256" key="new project wizard" timestamp="1592791492115">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="356" y="81" key="new project wizard/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592272098478" />
++    <state x="607" y="256" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1592791492115" />
++    <state x="696" y="390" width="886" height="535" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1592378069156">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="696" y="390" width="886" height="535" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592378069156" />
++    <state x="1078" y="230" width="672" height="678" key="search.everywhere.popup" timestamp="1592376038075">
++      <screen x="0" y="0" width="1920" height="1040" />
++    </state>
++    <state x="1078" y="230" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1592376038075" />
++  </component>
++  <component name="com.intellij.coverage.CoverageDataManagerImpl">
++    <SUITE FILE_PATH="coverage/springcloud$ApplicationRun8082.ic" NAME="ApplicationRun8082 Coverage Results" MODIFIED="1592465017779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
++      <FILTER>com.aaa.lee.springcloud.*</FILTER>
++    </SUITE>
++    <SUITE FILE_PATH="coverage/springcloud$ApplicationRun6081.ic" NAME="ApplicationRun6081 Coverage Results" MODIFIED="1592466632673" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
++      <FILTER>com.aaa.lee.springcloud.*</FILTER>
++    </SUITE>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/encodings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/encodings.xml	(date 1592268794123)
++++ .idea/encodings.xml	(date 1592268794123)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
++    <file url="PROJECT" charset="UTF-8" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/jarRepositories.xml	(date 1592268811061)
++++ .idea/jarRepositories.xml	(date 1592268811061)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Central Repository" />
++      <option name="url" value="http://maven.aliyun.com/nexus/content/groups/public" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+Index: 20200617-springcloud-eureka-management/2020618-eureka-6083/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/2020618-eureka-6083/pom.xml	(date 1592465154024)
++++ 20200617-springcloud-eureka-management/2020618-eureka-6083/pom.xml	(date 1592465154024)
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200617-springcloud-eureka-management</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>2020618-eureka-6083</artifactId>
++
++
++</project>
+\ No newline at end of file
+Index: 20200616-springcloud-consumer/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-consumer/pom.xml	(date 1592304145626)
++++ 20200616-springcloud-consumer/pom.xml	(date 1592304145626)
+@@ -0,0 +1,29 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>20200616-springcloud-consumer</artifactId>
++
++    <dependencies>
++        <dependency>
++            <groupId>com.aaa.lee.springcloud</groupId>
++            <artifactId>20200616-springcloud-model</artifactId>
++            <version>1.0-SNAPSHOT</version>
++        </dependency>
++
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-web</artifactId>
++            <version>2.3.0.RELEASE</version>
++        </dependency>
++    </dependencies>
++
++
++</project>
+\ No newline at end of file
+Index: 20200616-springcloud-management/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-management/pom.xml	(date 1592272098635)
++++ 20200616-springcloud-management/pom.xml	(date 1592272098635)
+@@ -0,0 +1,21 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++    <packaging>pom</packaging>
++    <modules>
++        <module>20200616-springcloud-model</module>
++        <module>20200616-springcloud-mapper</module>
++        <module>20200616-springcloud-service</module>
++    </modules>
++
++    <artifactId>20200616-springcloud-management</artifactId>
++
++
++</project>
+\ No newline at end of file
+Index: 20200616-springcloud-management/20200616-springcloud-service/src/main/java/com/aaa/lee/springcloud/service/BookService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-management/20200616-springcloud-service/src/main/java/com/aaa/lee/springcloud/service/BookService.java	(date 1592394512174)
++++ 20200616-springcloud-management/20200616-springcloud-service/src/main/java/com/aaa/lee/springcloud/service/BookService.java	(date 1592394512174)
+@@ -0,0 +1,22 @@
++package com.aaa.lee.springcloud.service;
++
++import com.aaa.lee.springcloud.mapper.Sys_configMapper;
++import com.aaa.lee.springcloud.model.Sys_config;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.util.List;
++
++
++@Service
++public class BookService {
++
++    @Autowired
++    private Sys_configMapper sys_configMapper;
++
++
++    public List<Sys_config> selectAllBooks() {
++        return sys_configMapper.selectAll();
++    }
++
++}
+Index: 20200617-springcloud-eureka-management/20200617-eureka-6081/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/20200617-eureka-6081/pom.xml	(date 1592375886268)
++++ 20200617-springcloud-eureka-management/20200617-eureka-6081/pom.xml	(date 1592375886268)
+@@ -0,0 +1,15 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200617-springcloud-eureka-management</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>20200617-eureka-6081</artifactId>
++
++
++</project>
+\ No newline at end of file
+Index: 20200617-springcloud-eureka-management/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/pom.xml	(date 1592465155324)
++++ 20200617-springcloud-eureka-management/pom.xml	(date 1592465155324)
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++    <packaging>pom</packaging>
++    <artifactId>20200617-springcloud-eureka-management</artifactId>
++
++    <modules>
++        <module>20200617-eureka-6081</module>
++        <module>2020618-eureka-6082</module>
++        <module>2020618-eureka-6083</module>
++    </modules>
++    <dependencies>
++        <dependency>
++            <groupId>org.springframework.cloud</groupId>
++            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
++        </dependency>
++    </dependencies>
++</project>
+\ No newline at end of file
+Index: .idea/inspectionProfiles/Project_Default.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/inspectionProfiles/Project_Default.xml	(date 1592268797032)
++++ .idea/inspectionProfiles/Project_Default.xml	(date 1592268797032)
+@@ -0,0 +1,36 @@
++<component name="InspectionProjectProfileManager">
++  <profile version="1.0">
++    <option name="myName" value="Project Default" />
++    <inspection_tool class="JavaDoc" enabled="true" level="WARNING" enabled_by_default="true">
++      <option name="TOP_LEVEL_CLASS_OPTIONS">
++        <value>
++          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
++          <option name="REQUIRED_TAGS" value="" />
++        </value>
++      </option>
++      <option name="INNER_CLASS_OPTIONS">
++        <value>
++          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
++          <option name="REQUIRED_TAGS" value="" />
++        </value>
++      </option>
++      <option name="METHOD_OPTIONS">
++        <value>
++          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
++          <option name="REQUIRED_TAGS" value="@return@param@throws or @exception" />
++        </value>
++      </option>
++      <option name="FIELD_OPTIONS">
++        <value>
++          <option name="ACCESS_JAVADOC_REQUIRED_FOR" value="none" />
++          <option name="REQUIRED_TAGS" value="" />
++        </value>
++      </option>
++      <option name="IGNORE_DEPRECATED" value="false" />
++      <option name="IGNORE_JAVADOC_PERIOD" value="true" />
++      <option name="IGNORE_DUPLICATED_THROWS" value="false" />
++      <option name="IGNORE_POINT_TO_ITSELF" value="false" />
++      <option name="myAdditionalJavadocTags" value="date" />
++    </inspection_tool>
++  </profile>
++</component>
+\ No newline at end of file
+Index: 20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/java/com/aaa/lee/springcloud/ApplicationRun6081.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/java/com/aaa/lee/springcloud/ApplicationRun6081.java	(date 1592376105786)
++++ 20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/java/com/aaa/lee/springcloud/ApplicationRun6081.java	(date 1592376105786)
+@@ -0,0 +1,13 @@
++package com.aaa.lee.springcloud;
++
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
++
++@SpringBootApplication
++@EnableEurekaServer
++public class ApplicationRun6081 {
++    public static void main(String[] args) {
++        SpringApplication.run(ApplicationRun6081.class,args);
++    }
++}
+Index: 20200616-springcloud-provider/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-provider/pom.xml	(date 1592376908240)
++++ 20200616-springcloud-provider/pom.xml	(date 1592376908240)
+@@ -0,0 +1,35 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>20200616-springcloud-provider</artifactId>
++
++    <dependencies>
++        <dependency>
++            <groupId>com.aaa.lee.springcloud</groupId>
++            <artifactId>20200616-springcloud-service</artifactId>
++            <version>1.0-SNAPSHOT</version>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-web</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.cloud</groupId>
++            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-actuator</artifactId>
++        </dependency>
++    </dependencies>
++
++
++</project>
+\ No newline at end of file
+Index: .idea/codeStyles/codeStyleConfig.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/codeStyles/codeStyleConfig.xml	(date 1592268797891)
++++ .idea/codeStyles/codeStyleConfig.xml	(date 1592268797891)
+@@ -0,0 +1,5 @@
++<component name="ProjectCodeStyleConfiguration">
++  <state>
++    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
++  </state>
++</component>
+\ No newline at end of file
+Index: .idea/springcloud.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/springcloud.iml	(date 1592304434487)
++++ .idea/springcloud.iml	(date 1592304434487)
+@@ -0,0 +1,2 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4" />
+\ No newline at end of file
+Index: 20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/resources/config/application.properties	(date 1592465837868)
++++ 20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/resources/config/application.properties	(date 1592465837868)
+@@ -0,0 +1,8 @@
++server.port=6082
++server.servlet.context-path=/
++eureka.client.register-with-eureka=false
++
++eureka.client.fetch-registry=false
++
++eureka.instance.hostname=eureka02
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka03:6083/eureka
+\ No newline at end of file
+Index: 20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java	(date 1592399792987)
++++ 20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java	(date 1592399792987)
+@@ -0,0 +1,15 @@
++package com.aaa.lee.springcloud;
++
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++
++
++
++@SpringBootApplication
++public class ApplicationRun {
++
++    public static void main(String[] args) {
++        SpringApplication.run(ApplicationRun.class, args);
++    }
++
++}
+Index: 20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/resources/config/application.properties	(date 1592465837722)
++++ 20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/resources/config/application.properties	(date 1592465837722)
+@@ -0,0 +1,23 @@
++server.port=6081
++server.servlet.context-path=/
++
++eureka.client.register-with-eureka=false
++
++eureka.client.fetch-registry=false
++
++# eureka的核心配置
++# 单机版
++# eureka.instance.hostname=localhost
++
++# 集群版
++eureka.instance.hostname=eureka01
++
++# 集群版
++eureka.client.service-url.defaultZone=http://eureka02:6082/eureka,http://eureka03:6083/eureka
++
++# 关闭eureka的自我保护机制
++# eureka.server.enable-self-preservation=false
++
++# 失效eureka的自我保护机制(单位是毫秒)
++# 如果长时间不访问eureka，仍然会显示那一行自我保护机制的提示，但是已经失效了
++eureka.server.eviction-interval-timer-in-ms=7000
+\ No newline at end of file
+Index: 20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/java/com/aaa/lee/springcloud/ApplicationRUn6082.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/java/com/aaa/lee/springcloud/ApplicationRUn6082.java	(date 1592465268184)
++++ 20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/java/com/aaa/lee/springcloud/ApplicationRUn6082.java	(date 1592465268184)
+@@ -0,0 +1,17 @@
++package com.aaa.lee.springcloud;
++
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
++
++/**
++ * @Author：wyh
++ * @Created by:王宇航 on 2020/6/18 15:27
++ ***/
++@SpringBootApplication
++@EnableDiscoveryClient
++public class ApplicationRUn6082 {
++    public static void main(String[] args) {
++        SpringApplication.run(ApplicationRUn6082.class,args);
++    }
++}
+Index: 20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/controller/BookController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592397588920)
++++ 20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592397588920)
+@@ -0,0 +1,32 @@
++package com.aaa.lee.springcloud.controller;
++
++import com.aaa.lee.springcloud.model.Sys_config;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RestController;
++import org.springframework.web.client.RestTemplate;
++
++import java.util.List;
++
++/**
++ * @Company AAA软件教育
++ * @Author Seven Lee
++ * @Date Create in 2020/6/16 10:56
++ * @Description
++ **/
++@RestController
++public class BookController {
++
++    @Autowired
++    private RestTemplate restTemplate;
++
++
++    @GetMapping("/all")
++    public List<Sys_config> selectAllBooks() {
++        // 需要去调用provider项目中的方法
++        // 因为restful的风格就是controller去调用controller，所以需要配置restTemplate(spring公司默认提供了)
++        // 必须要保证provider中controller使用的是get请求方式getForObject()
++        return restTemplate.getForObject("http://localhost:8081/all", List.class);
++    }
++
++}
+Index: 20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/resources/config/application.properties	(date 1592466611079)
++++ 20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/resources/config/application.properties	(date 1592466611079)
+@@ -0,0 +1,8 @@
++server.port=6083
++server.servlet.context-path=/
++
++eureka.client.register-with-eureka=false
++eureka.client.fetch-registry=false
++
++eureka.instance.hostname=eureka03
++eureka.client.service-url.defaultZone=http://eureka02:6082/eureka,http://eureka01:6081/eureka
+\ No newline at end of file
+Index: 20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java	(date 1592276309233)
++++ 20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java	(date 1592276309233)
+@@ -0,0 +1,21 @@
++package com.aaa.lee.springcloud.config;
++
++import org.springframework.context.annotation.Bean;
++import org.springframework.context.annotation.Configuration;
++import org.springframework.web.client.RestTemplate;
++
++/**
++ * @Company AAA软件教育
++ * @Author Seven Lee
++ * @Date Create in 2020/6/16 10:58
++ * @Description
++ **/
++@Configuration
++public class RestConfig {
++
++    @Bean
++    public RestTemplate restTemplate() {
++        return new RestTemplate();
++    }
++
++}
+Index: 20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/java/com/aaa/lee/springcloud/ApplicationRun6083.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/java/com/aaa/lee/springcloud/ApplicationRun6083.java	(date 1592466502427)
++++ 20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/java/com/aaa/lee/springcloud/ApplicationRun6083.java	(date 1592466502427)
+@@ -0,0 +1,17 @@
++package com.aaa.lee.springcloud;
++
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
++
++/**
++ * @Author：wyh
++ * @Created by:王宇航 on 2020/6/18 15:47
++ ***/
++@SpringBootApplication
++@EnableDiscoveryClient
++public class ApplicationRun6083 {
++    public static void main(String[] args) {
++        SpringApplication.run(ApplicationRun6083.class,args);
++    }
++}
+Index: 20200616-springcloud-consumer/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-consumer/src/main/resources/config/application.properties	(date 1592354828237)
++++ 20200616-springcloud-consumer/src/main/resources/config/application.properties	(date 1592354828237)
+@@ -0,0 +1,2 @@
++server.port=7081
++server.servlet.context-path=/
+Index: 20200616-springcloud-consumer/target/classes/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-consumer/target/classes/config/application.properties	(date 1592354828237)
++++ 20200616-springcloud-consumer/target/classes/config/application.properties	(date 1592354828237)
+@@ -0,0 +1,2 @@
++server.port=7081
++server.servlet.context-path=/
+Index: 2020618-springcloud-consumer-ribbon/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-springcloud-consumer-ribbon/pom.xml	(date 1592462272847)
++++ 2020618-springcloud-consumer-ribbon/pom.xml	(date 1592462272847)
+@@ -0,0 +1,28 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project xmlns="http://maven.apache.org/POM/4.0.0"
++         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
++    <parent>
++        <artifactId>20200616-springcloud</artifactId>
++        <groupId>com.aaa.lee.springcloud</groupId>
++        <version>1.0-SNAPSHOT</version>
++    </parent>
++    <modelVersion>4.0.0</modelVersion>
++
++    <artifactId>2020618-springcloud-consumer-ribbon</artifactId>
++    <dependencies>
++        <dependency>
++            <groupId>org.springframework.cloud</groupId>
++            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.cloud</groupId>
++            <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
++        </dependency>
++        <dependency>
++            <groupId>org.springframework.boot</groupId>
++            <artifactId>spring-boot-starter-web</artifactId>
++        </dependency>
++    </dependencies>
++
++</project>
+\ No newline at end of file
+Index: 2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/controller/BookController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592467909251)
++++ 2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592467909251)
+@@ -0,0 +1,28 @@
++package com.aaa.lee.springcloud.controller;
++
++import com.aaa.lee.springcloud.model.Sys_config;
++import com.aaa.lee.springcloud.service.BookService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RestController;
++
++import java.util.List;
++
++/**
++ * @Author：wyh
++ * @Created by:王宇航 on 2020/6/18 15:55
++ ***/
++@RestController
++public class BookController {
++
++    @Autowired
++    private BookService bookService;
++
++
++    @GetMapping("/all")
++    public List<Sys_config> selectAllBooks() {
++        System.out.println("8083");
++        return bookService.selectAllBooks();
++    }
++
++}
+Index: 20200616-springcloud-management/20200616-springcloud-mapper/src/main/resources/mapper/Sys_configMapper.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-management/20200616-springcloud-mapper/src/main/resources/mapper/Sys_configMapper.xml	(date 1592394466545)
++++ 20200616-springcloud-management/20200616-springcloud-mapper/src/main/resources/mapper/Sys_configMapper.xml	(date 1592394466545)
+@@ -0,0 +1,39 @@
++<?xml version="1.0" encoding="UTF-8" ?>
++<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
++<mapper namespace="com.aaa.lee.springcloud.mapper.Sys_configMapper" >
++  <resultMap id="BaseResultMap" type="com.aaa.lee.springcloud.model.Sys_config" >
++    <id column="variable" property="variable" jdbcType="VARCHAR" />
++    <result column="value" property="value" jdbcType="VARCHAR" />
++    <result column="set_time" property="setTime" jdbcType="TIMESTAMP" />
++    <result column="set_by" property="setBy" jdbcType="VARCHAR" />
++  </resultMap>
++  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
++    delete from sys_config
++    where variable = #{variable,jdbcType=VARCHAR}
++  </delete>
++  <insert id="insert" parameterType="com.aaa.lee.springcloud.model.Sys_config" >
++    <selectKey resultType="java.lang.String" keyProperty="variable" order="AFTER" >
++      SELECT LAST_INSERT_ID()
++    </selectKey>
++    insert into sys_config (value, set_time, set_by
++      )
++    values (#{value,jdbcType=VARCHAR}, #{setTime,jdbcType=TIMESTAMP}, #{setBy,jdbcType=VARCHAR}
++      )
++  </insert>
++  <update id="updateByPrimaryKey" parameterType="com.aaa.lee.springcloud.model.Sys_config" >
++    update sys_config
++    set value = #{value,jdbcType=VARCHAR},
++      set_time = #{setTime,jdbcType=TIMESTAMP},
++      set_by = #{setBy,jdbcType=VARCHAR}
++    where variable = #{variable,jdbcType=VARCHAR}
++  </update>
++  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
++    select variable, value, set_time, set_by
++    from sys_config
++    where variable = #{variable,jdbcType=VARCHAR}
++  </select>
++  <select id="selectAll" resultMap="BaseResultMap" >
++    select variable, value, set_time, set_by
++    from sys_config
++  </select>
++</mapper>
+\ No newline at end of file
+Index: 20200616-springcloud-management/20200616-springcloud-mapper/src/main/java/com/aaa/lee/springcloud/mapper/Sys_configMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-management/20200616-springcloud-mapper/src/main/java/com/aaa/lee/springcloud/mapper/Sys_configMapper.java	(date 1592394466640)
++++ 20200616-springcloud-management/20200616-springcloud-mapper/src/main/java/com/aaa/lee/springcloud/mapper/Sys_configMapper.java	(date 1592394466640)
+@@ -0,0 +1,17 @@
++package com.aaa.lee.springcloud.mapper;
++
++import com.aaa.lee.springcloud.model.Sys_config;
++
++import java.util.List;
++
++public interface Sys_configMapper {
++    int deleteByPrimaryKey(String variable);
++
++    int insert(Sys_config record);
++
++    Sys_config selectByPrimaryKey(String variable);
++
++    List<Sys_config> selectAll();
++
++    int updateByPrimaryKey(Sys_config record);
++}
+\ No newline at end of file
+Index: 2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/ApplicationRun8083.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/ApplicationRun8083.java	(date 1592468233602)
++++ 2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/ApplicationRun8083.java	(date 1592468233602)
+@@ -0,0 +1,19 @@
++package com.aaa.lee.springcloud;
++
++import org.mybatis.spring.annotation.MapperScan;
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
++
++/**
++ * @Author：wyh
++ * @Created by:王宇航 on 2020/6/18 16:07
++ ***/
++@SpringBootApplication
++@EnableDiscoveryClient
++@MapperScan("com.aaa.lee.springcloud.mapper")
++public class ApplicationRun8083 {
++    public static void main(String[] args) {
++        SpringApplication.run(ApplicationRun8083.class,args);
++    }
++}
+Index: 20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/controller/BookController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592464926962)
++++ 20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/controller/BookController.java	(date 1592464926962)
+@@ -0,0 +1,24 @@
++package com.aaa.lee.springcloud.controller;
++
++import com.aaa.lee.springcloud.model.Sys_config;
++import com.aaa.lee.springcloud.service.BookService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RestController;
++
++import java.util.List;
++
++
++@RestController
++public class BookController {
++
++    @Autowired
++    private BookService bookService;
++
++    @GetMapping("/all")
++    public List<Sys_config> selectAllBooks() {
++        System.out.println("8081");
++        return bookService.selectAllBooks();
++    }
++
++}
+Index: 20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java	(date 1592377584091)
++++ 20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java	(date 1592377584091)
+@@ -0,0 +1,24 @@
++package com.aaa.lee.springcloud;
++
++
++import org.mybatis.spring.annotation.MapperScan;
++import org.springframework.boot.SpringApplication;
++import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
++
++/**
++ * @Company AAA软件教育
++ * @Author Seven Lee
++ * @Date Create in 2020/6/16 11:09
++ * @Description
++ **/
++@SpringBootApplication
++@MapperScan("com.aaa.lee.springcloud.mapper")
++@EnableDiscoveryClient
++public class ApplicationRun {
++
++    public static void main(String[] args) {
++        SpringApplication.run(ApplicationRun.class, args);
++    }
++
++}
+Index: 2020618-srpingcloud-provider-8083/src/main/resources/config/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- 2020618-srpingcloud-provider-8083/src/main/resources/config/application.properties	(date 1592467581956)
++++ 2020618-srpingcloud-provider-8083/src/main/resources/config/application.properties	(date 1592467581956)
+@@ -0,0 +1,52 @@
++server.port=8083
++server.servlet.context-path=/
++
++spring.datasource.driver-class-name=com.mysql.jdbc.Driver
++spring.datasource.url=jdbc://localhost:3306/sys?useSSL=false
++spring.datasource.username=root
++spring.datasource.password=wangyuhang724
++spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
++
++mybatis.type-aliases-package=com.aaa.lee.springcloud.model
++mybatis.mapper-locations=classpath:mapper/*Mapper.xml
++
++# 配置eureka的注册中心地址(方便于自己向eureka中去注册)
++# 在consumer中有一个restTemplate(模拟http协议)--->http://localhost:8081/all
++# 之后就不会再使用真实地址来调用
++eureka.client.service-url.defaultZone=http://eureka01:6081/eureka,http://eureka02:6082/eureka,http://eureka03:6083/eureka
++
++# 配置eureka的实例id(和数据库的主键一样，在同一个集群eureka中是绝对不允许重复的)
++# 官方文档中是没有要求限制的，怎么写可以
++# 但是咱们规定一下，这个值必须要体现provider的功能以及provider的端口号
++# 予人玫瑰手有余香
++# 张三正在开发book-provider
++# 李四正在开发order-provider
++# 这么去写其实并不是方便自己，只是让自己队友知道目前自己正在开发什么功能，方便队友操作
++eureka.instance.instance-id=book-interface-8083
++
++# 实际开发中的细节
++# 如果有一天你请假(结婚)--->但是在公司你所负责的provider抛异常了--->可以让同事帮忙处理--->如果你的同时可以直接获取到你服务器的ip地址，就可以直接远程操作修改异常
++# 配置当鼠标悬浮否一个provider的时候，显示的不是localhost，直接显示ip地址
++eureka.instance.prefer-ip-address=true
++
++# 这个时候发现了其实eureka所显示的provider都是一个a标签，但是点进去之后会报错404(这个时候也是springcloud所给程序员提供的一种便利)
++# 当点击a标签的时候，显示的就是provider的开发者，公司名称，provider所提供的功能，provider下所有controller以及调用方法
++# info开头--->剩下的信息你可以随意去编写
++# 如果想要让以下信息生效，就必须要添加jar包(必须要添加actuator的jar包)
++info.author.name=wyh
++info.company.name=AAA Software EDU
++info.project.description=Test Book Demo
++info.fahjhfj.dajhfjahf=fhdskjfhsjhfdjkhf
++
++
++# 虽然已经成功的运行起来了，但是会有一个问题存在Application的值是UNKNOWN
++# 以后consumer就不会再通过ip地址来访问provider了，有了eureka之后，会通过eureka的Application的值来进行访问
++# 除了负载均衡之外，绝对不能重复
++# 如果要实现负载均衡，application.name的值必须要保持一致
++spring.application.name=book-interface
++
++# 失效eureka的自我保护机制
++# 配置自己向eureka去发送心跳的时间(单位是秒)
++eureka.instance.lease-renewal-interval-in-seconds=5
++# 配置在eureka最后一次接收到心跳往后数几秒进行剔除
++eureka.instance.lease-expiration-duration-in-seconds=8
+\ No newline at end of file
+diff --git 20200616-springcloud-provider/target/classes/com/aaa/lee/springcloud/controller/BookController.class 20200616-springcloud-provider/target/classes/com/aaa/lee/springcloud/controller/BookController.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..89c98c3809541ba1564972f8bdadaf580ae862da
+GIT binary patch
+literal 1076
+zc$}3}+fEcg5IxOpc9#*>MO3`wbpfH-=mQC46C}}>@e<bX;)Cg#ZPtdKZqm~O;jh#f
+zOnmSI{3v71uvs9&0}s=csycP5>P+{azrTJ1XkodA3hq^L9}g;+t>GaaRT1EE4Nvei
+zz_S2NhVj_i-HvqoDv=C}QDRdrgy33Ap6xkhdWp7qmuJTi{^|t2$}qE;8?REir7{(3
+zxo(X0!YgYshLy;=UY}#ziBuj~x65NGOvblG;;lR6Vo<=>b8ionlU<@6TT@2)Hp6gp
+zZi``L!**%7$w(RbE>C0WJ__o_(1>gz^p<d{@cY3L|3y*z7Z<LQSmT}5TDo$Zje$#@
+zCo-vJ;@7n<Qbf~e&P6+7U+~;3%_Eh0LRCAeXN1okwQK(eSi7)uN_%MDIm|xO4BM)=
+z+9tA>=jwDIV;(EhJuT52>EDXIJ;G7h=)TZ-u`U-{Gt@dZcZqzh3JIpp?zL3RchL_y
+zuhFK={3%&NT){+uxe)VMppGlcE3E*}Lo8w`L>09FJj69jGqf%(IzzpbPYcuI@8ca(
+z|4fL~@-n5XU~@`LA8V~F|3KWn<DC>KsWEj<m?0<z@Y+yaGde}-i@8>dtF>^6`;J+9
+zJr#Od3`51%WXH)HBO8((B1<~aIY}NT%gBz-{{;J1rt5t$2zHgu@ECvwrb<#05W{70
+zyCehZ-!aq}KElZS4~!mR?CXH1Mix|2p_&t}dY|ihiMvsbR}6HMzL`&88E#ShcA331
+I82&Es4<H~KaR2}S
+
+diff --git 20200616-springcloud-management/20200616-springcloud-model/target/classes/com/aaa/lee/springcloud/model/Sys_config.class 20200616-springcloud-management/20200616-springcloud-model/target/classes/com/aaa/lee/springcloud/model/Sys_config.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..8bccf79aecea4bde281e77926794d045fef83e21
+GIT binary patch
+literal 2624
+zc$}3~T~ixn6n-|@-E1}sq!CKfB2rszzG$q99|=&Tg^B{L1ySlpyMzT6mjsgyGyMl%
+zIpdWx&Uh;~TxdtrnRdp}n>ynU@aH(5^X>;R-OkXP^PYX5=bZPP=e+y={qLjS0bIeB
+zjx$(HLd6oBWi~h2+)Cghoz~lIR+zQQ-p6d#*nGl!pC+)bqaTYJ?(q7VhR-#8!S0tD
+z?rONlu9?7w1nt0V+UAC1Nysejng?dtG3(pq6}M^Ex2qDA1Jh{}m}pt<s=Y^E+M~5y
+z+bLf+U5iNs&fb@xPTF<bot6;K<<}(0*BYA?FtBLXt>yOKhSgjRPHNOlXU#v^-;~`Q
+zyCtEpSZnN+O_K_-ta59g>!>-6_GWpHvN`3I`>ngRMt#fX>QdX5yB0Pun9E1Cpb3)b
+zLML}6Xe1NRyIavb26vNcbtj+BJ)JxMJhf`A<1$)ZWlZLJt9b6Te!;5sb=!1E!=dh4
+zZ*J^bHMg3-BSC8Xf66{Y18lfER#QSB&*0+mmFO4yT^qVj5N)IaRD2l%3a?3@2ZrBz
+z01IhDkiWE=S)b$5$=xwqJKnXSJG4NR-MYQ7G)JYAuQsh#+i@i%yDCzH^R?r%)G)K#
+z@J2=FuQb}tnl*28(7>^Tmst)2FJa6;7H18dV>5ym4UFQfgxpDIVc;s>Fz_la8F-z&
+z9D8{b3>4X$!Fv*hd+*R}+jcft`oZH&xuCl#12t??8>KPP<P^108uQx}pd~=jErC+r
+zzydDOKiWHE(!|`~x9XH^Jn|wxqpoTXKe$ZK<l{WOLTBg|lM!P*$&0b1VkK3@Ix4>V
+zAhGOZ&(l|#R*6=n@DS23g7z|5Rct13fvn*Xa1pQ2DzVg01^<fJ&pp9<WN<DrINlp<
+zL<ZATBZB4L;Qq+qV&ut6Z*V#?xP);(xJv98Yf~uxhFGCD+>`9INAbhi<C*ZOm!lKK
+zPn_tSpQw!2q7um`PQ<r@6J3d}NI7w$QNJSk`@BTb3~^F~Jt!7_f+8Ok|AhJjl=xBc
+z52#C}LI(-)NshK$B2$sa|3WG&Kf$R(7~@&FgJi(aD@uv2npK#iK0)RXeOV=|c9Bw*
+zM2W4IO)yFGNr|l1MKUVM5?ei+WRmWal36_<$w!er?|a>ZJwL#km>_%zKjJOgixKiI
+z-ln}c-Oz9F4tX+e;48dKo`NM<sF0_^!92-4L3x|>GEI`F;XBf7io7Jgr|C|Ur&ILR
+zKuyXa3C$IjF}gr+C`wqMLS;>eq0sZ^r}>9C32r7`os_49^dsr&4hgTNi-$;zchGll
+zN(e49kd=Kz<8gRUs-g%;2_YqbjEX8CHH1_FjYL=czE_K1aU6S?#Wlhe674#9F%n@5
+zb3)P!B;dS|beb;N4I$||hAGE{$hi>y*}D|SXUsfC|N27=WYQg+;#O(NWISJI{{_!a
+ebugG2@_d8$Pm}3jIQr^)kHSp&D10DTAN~hI+1%^^
+
+diff --git 20200616-springcloud-provider/target/classes/com/aaa/lee/springcloud/ApplicationRun.class 20200616-springcloud-provider/target/classes/com/aaa/lee/springcloud/ApplicationRun.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..6016e2480de778950b47a5ba80af4b76c71882b2
+GIT binary patch
+literal 885
+zc$|$=O>fgc5Ph5PhCoX~3+1DQ3ko@8#f3{yrPjbHfJ9I@^t5)iW{bURt=ED6EKVQ}
+z`~ZFwV!R2|NI}Af8PCj{H?wc|$Ioxy0X)Y2E*iMi#(o#Kai@*D46Ub1D|f_DA3mBh
+zGy=1b4BJzs<*OnMrF|>Hgfji9i9|9NR+aHO*>LYw&M=%tCgnm1o=C~_%qks6i76KR
+zILi_h38##HQ|JkGq(W(iz2WKfTr8<U=$Ox3*)j3+g^h`Eu%XP*oteT$@`WmA5B}yJ
+zmw1MK`gJOmbCoMv@mOo)JcLM(rpCtW_0FtF<ws*b@X#2?Md3_j^qGnaEBVYrPN-0s
+zLGwqRAiW4Fk*|rk_%njP6j>(iED|NSxfDr3dmfNBW71|!+KemOj8l(hIN7+?O1~&k
+zQaip-d1RK-UhwC-RQ}oTIPmpJ4^6Zf9{%4ov~jP80~|8!T#EcUJeQH9GyYSfl`0h~
+zdNZ~l8xAX%6(l0hC!20}^D&Kf@{{AiTKw{Kl@Y<JJi!Ch=;@YU4XivZ*)~O-JR{#6
+zeF6LI%N?>UpX_6cY;OfX7gxw{QG9jX{KS(1oqlcf74>(Q{ay0FE}`}+935Q4w#V#v
+Wdz~hL5Ooa5-yqEHDOgUKo4_xK_w)?_
+
+diff --git 20200616-springcloud-management/20200616-springcloud-model/target/classes/META-INF/20200616-springcloud-model.kotlin_module 20200616-springcloud-management/20200616-springcloud-model/target/classes/META-INF/20200616-springcloud-model.kotlin_module
+new file mode 100644
+index 0000000000000000000000000000000000000000..a49347afef10a9b5f95305e1058ba36adec7d6dd
+GIT binary patch
+literal 16
+Rc${NkU|?ooU|@t|0RRA102TlM
+
+diff --git 20200616-springcloud-management/20200616-springcloud-mapper/target/classes/com/aaa/lee/springcloud/mapper/Sys_configMapper.class 20200616-springcloud-management/20200616-springcloud-mapper/target/classes/com/aaa/lee/springcloud/mapper/Sys_configMapper.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..19f58a3535b4265f052421728bcc5e412f0c3af6
+GIT binary patch
+literal 511
+zc$|%p-AcnS6vzLWTkGc6EbJY+3k_Z?1HBlC9TWNh65CiZ(ht&9=&O0*1NczlNqaFY
+z3d_wQC%^Omk@NNa@d@AtfseV5ONJnoT3Y$gJ{y$_(>}?TVG%|<@h-R)MaE-mRFT~-
+z9~nGV)Y4dnt1wE+oC`sWl)SDSlIXHYd0tW?kK6hsDT_DN4+b?^68qb-`pa^7F2l4>
+zz1Nxy;j&L_tkOJEwRJ$OvO?I#NM{=YcZa)H6c#j9Du$by#bsj>xmKDKi~Yn#RFyQ>
+zPRPLj^>h>;jxo&li`l;J=#L%)!wBw7#tcUo15_vQy6WS&t5eK~J0WU>Q@WqIcj}yX
+Gor@op%atJj
+
+diff --git 20200616-springcloud-management/20200616-springcloud-mapper/target/classes/META-INF/20200616-springcloud-mapper.kotlin_module 20200616-springcloud-management/20200616-springcloud-mapper/target/classes/META-INF/20200616-springcloud-mapper.kotlin_module
+new file mode 100644
+index 0000000000000000000000000000000000000000..a49347afef10a9b5f95305e1058ba36adec7d6dd
+GIT binary patch
+literal 16
+Rc${NkU|?ooU|@t|0RRA102TlM
+
+diff --git 20200617-springcloud-eureka-management/20200617-eureka-6081/target/classes/com/aaa/lee/springcloud/ApplicationRun6081.class 20200617-springcloud-eureka-management/20200617-eureka-6081/target/classes/com/aaa/lee/springcloud/ApplicationRun6081.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..592d99f55e5eb72614e464c2f24841dfa4fe6854
+GIT binary patch
+literal 801
+zc$|$=O>fgc5Ph4baWH|F6k5v1fm?_W+g>Upqe>-|lLZn%;lOF_Zrp9{-DtgT`?ol?
+z;=m8!M^znfEF}^_!j@*VGw;3m*!^?+>o<UXybRIClK|TxcJMU7E<@+N(#jn&tPNgI
+z7}_IqA{jPfrRC?UNTmHHlAI#_*rXz#2&?LI6KuOvRWiJZQ&Vsu1ka`9<;*IbrMan2
+z_|a^Zt5i5;^w&xs?7iEMh*b!s8MX&M;xlnUB%w1tb~P*VJqVkT>eh-hLpU~-P30$5
+z*WdYD|831-*rlUWg`B8TQL9H<8|Pspd>9*>HEm9<DCDKF=R7gSaZx#w8a-86WhEbb
+z$OlR+)uA3ft`wM0tfiag>WWJeI2XK>_Ci{Itm}mx``Flrq8`@KVHp1Z>H<9L;W=I~
+zY%Uh_B{`F+Bb|TFG@oKgj_%r4WRt<tf=9V1%V^b&tRB{AC$AhIHOs2UTPiV{rz5;V
+zi=JHlwZQ6$$p&=d<Qe((;WgM#pYD?F_~1SIf!-W|5chqohX)P$z>5LhertGxweJgl
+bNFIa_2))qg;vqIXX4Bh8=r`Cc@{fT#wCC5X
+
+diff --git 20200617-springcloud-eureka-management/2020618-eureka-6082/target/classes/com/aaa/lee/springcloud/ApplicationRUn6082.class 20200617-springcloud-eureka-management/2020618-eureka-6082/target/classes/com/aaa/lee/springcloud/ApplicationRUn6082.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..935acefcfdce3bbfeeaa2f281c69504c6e5f455f
+GIT binary patch
+literal 799
+zc$|$=O>fgc5Ph4bNorCWQfMh32X1MESlUB{<f>9@;ADZ+Ksaz(J6p5G-i_Alw)`wk
+zpdR=E{3yiOF{&kkgby>CkN0NYtbhKx{sCYQk3F<;uZt}Y+qmDw4nyZqY2}U>Rz|y1
+zhIU|Pl3^oMTD~c=NZNNIN+~l8O)S!>u&RvfWZQjGIm6R1HW?Q}@Kj2k&#lr)oSI_B
+zkLUAL#lk70Pv7f<=P&ksLS;f}hON=Z@LXIFNa%!5T#53l9fVDYb#qCX!JC-E#`3i)
+z=WqYb|E$C??3@<bsZ35)u4vU`t&OYNi1;WpHmTP<vm%q1#(w6JF^-GEnb_zvl@wO;
+zN!4;fg~lA(;bbYnLUEibsU4rGJT@27e&Mfld8?Oy;-ISgeXOFxF#i9;b@8B&hj_#=
+zxH-$)=v>B*c>bwqp`k%XFKr95(Wr6WAQgG;FME&WQjK=<%JHB+RjIHsB3P7tJVA?o
+zxbka(m5RxBDdOZA`PK0^u&-6QN48TX*Re*nzi5DmTjbX$Ua!Fi6&cVQw#MJF^5F*W
+ckq0)YYtZ26;Wp*Uo<U{rU|9EVlD`Z52Jt}Fwg3PC
+
+diff --git 20200617-springcloud-eureka-management/2020618-eureka-6083/target/classes/com/aaa/lee/springcloud/ApplicationRun6083.class 20200617-springcloud-eureka-management/2020618-eureka-6083/target/classes/com/aaa/lee/springcloud/ApplicationRun6083.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..ea9474ad4de78d78546a16004c9b5c1dba308fc3
+GIT binary patch
+literal 799
+zc$|$=O>fgc5Ph4bNorCWQfMh32X1MESP)W$WK^j&aI!!mC>%JgH(RsC-i_Al0zZor
+zhyy=>AB7k@Mzutc@L@*t@!rgv_0M15e*k!dy8*hm(Z^nZecbHhfT8zP8|{x7HYSI2
+zhHhjRieV?#M!hWaM7cL2$tW|9trXc@I9<g}vg_aLg5iEFZO(-dJX4AnOQ%gLGg~hB
+z$#R)#DZIAkb!m<sK6xAxDi_)?>`mUq=i-7u!lZoWD^ytTAY4kUyKBk}!OWIUsu#MN
+zzyCM?g9^iNK%v*Un(IQ-swc)+U$+tQaco`Mta;`{u0C4#fhX2_E=q5uHD@|4o#L~)
+z<&+AoIkdy+T7s2gnQ3J_U+6;G3*|oZ=cc;Vvp;cE*TW$;(PNnY|Ka+$HN<V)VHjPW
+z<yCU7q$i$#Dq3l1(a}r0l58?*oj1xvQH1N>W4%;sy!zyM)SRkP*cuV7$|3HdLqA;g
+zb-*gcWcw6x@{IiE^efnxx;!A;tCQQ<B0F3)Aix#!TNH0M;G>!h7>qm9Z`gQyi4VvF
+aJJdC5aSU*ka#hc$w%0IjdUwfR2Yv&+vey{^
+
+diff --git 2020618-srpingcloud-provider-8082/target/classes/com/aaa/lee/springcloud/ApplicationRun8082.class 2020618-srpingcloud-provider-8082/target/classes/com/aaa/lee/springcloud/ApplicationRun8082.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..14c60b2e163dde9257828ca0c422e9723385644e
+GIT binary patch
+literal 897
+zc$|$=O>fgc5Ph5Pnn2qWTFOU(TZm8=IG{>Fm0ANQ0}?^u(9_!4hAsAPv|b1Lvp9iz
+z=nvpWA;ylOmIx9)%xGrbyqSIDA3x7806f8c4-MRGW7oqi+-~CzL+iQH${jG&`wu4!
+z4c|;9!+M~!e3K=iwC_b2Q>GV~NW>FiRUVhghWn^ehDSkU5-x<`v6MWWTcu}FY_cgo
+zoX=ww38##Hm+Ae-`%g#Il?bI7w)@AysaQ~x&@(=EdDp1eLD(6wZmlRYcw>{<NWN0}
+z{GGq~hj|afE`?4da-vd2s~&1?Tmd8EgTUBXx#o!#iTrHrCmtH(xX7G|j6PAb%t}5k
+zAV*ZF%%L3y1wnEaQX(yhxcD=IzZUbkwBtzR;O0Wa8ST198VyOKA!#(MXf#X;G{e!#
+zwU#<Yv69;HsY)ZWkoJtf)cFNo{Eq#iKI)>07VY={=V;?@7kjwJuyHB&+wfFIj(Gm5
+z(^8oV9sNHxBOCTBNAqKmrlVC?Uj0;~o&4gsUmhTTVP%BBERXO2HTsS7uLhRCm~5LO
+zPM(o(4!(hXEy^9Tts=ROHL~3$03NQ8U!(YH+5D^^13JCh;5+IcF8e+5z$T%36^;(B
+c5oeCsDC{Oxfo;^WMgBTrZXAQ9l-U7(0l75xga7~l
+
+diff --git 2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/controller/BookController.class 2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/controller/BookController.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..a9b44e7f5ce48a74633c694cb438367ec4aa5cc5
+GIT binary patch
+literal 1057
+zc$}3}T~8B16g@**N^33Hii+R(*<x@)^ubspsU(<~MH3*r@HD#}%D{A{nVqHaUuj}A
+zG12(!k22m}np(ad$Y%HE-h1vj_uiTP^Y_Ou0840;QNW!Ninu$4dqvzYV!n(Acv!?E
+zhKiH1-;%w)7G5$e2G(_X+;_@!cb(|TfprIbAVVH$C5`7BWAGNk+(u%&>d9>tt5D0f
+zG1d#Otce+3oyiqSVPd{3B5&O%E=C2sop?J?PIicPa#<PWR~T}Q<~Boq)pn@4=|CCz
+zA?bzEZ3$9is0B6>dRsV^`omz}?<tah5k$7fg%DgzIcy`+HtF!l8t<&u(($*}9;}XB
+zQm)2Q%gDF2PE$lvYczv>aVU7=mF9tpJ)ugQs%wN#9LY6L0hW(^G4MQ9^_fa*h3a0O
+zyWUWl&iFRoNxv@oeZo;$;ZW!#os0{u8OobBagkh8>9qCZBRo%~&)fZ3Lg|5yZJ>e*
+zE>|#x5*_ZI_x;zLhorDbb4W+WCXafk9v_)uCJSg`y8L6fPb)0qaRpEClws+@2f^^{
+z0{4(^aaZ~^>yCsO-Zz5(-E8`lq%{^<)gq2tJHg40Tg}rU%+rrkpdX20BHaqvGI^6^
+zFOi)fOADiKl{`+Cku5BI2m6wxr-xu*h8_?&1K<j38EG9?k;{tTAfM&x3tur&%hmF^
+upD298<Zt9ZpP-r@qpA<7W;4vSth*{@uG4#C2Q0=M#cyWWTch4@1OEW%=^irx
+
+diff --git 2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/config/RestConfig.class 2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/config/RestConfig.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..c845bba6a25cf4ec8e62b92939727b16db40498b
+GIT binary patch
+literal 893
+zc$}3|-%k@k5T0#ITh1!Af{MQq<%Mc+0}sAHOoW8Q<f2I>O?;fYo0i4BU9#N+{w#eW
+zfrLN6KZ-beS5XiWyvxnEGdtgRGqd~i{NxM(R^deiEm&;9lL%@7pGMFK_^bub1vEF5
+zQU1Mv`f`6Lps{5$5-=AlL!XK~A-98x=14ELDe56Q75r(i;dj+Uz?(R=xkN;%iR5J8
+zDKk#BEi#!}Gg4zYpo!lqm+JyLj=deq_ceOfkjwqpy781Ya+uShb>HM6B{J2Dj4$cG
+z2`sQUD2!J*4b?<(86S+X9=)=LOIf*Ai_7qI<RxCD%1uJUS{v8rSH)L<*A}w`HJX&1
+zjM>?&oQ&zMT$w=;M)8W<2vacRM_L_SW_=7foF09#g-dB$1;*T;sl4680~GM?w#8Sh
+z!j;~72ih>pr|=(B6tHw-u>&-j&8x2Zw?0?_-Oz+&k+J-o>{06BB{cc!g{KZ86v;MX
+zPcjO|nb*f4e(<6Oci1+|V29se%LKR!_ZWFt(B-T^USkY<?Ng|IJ%;-CEBx+X{PvW8
+npTBVXdyEfCy?I#pSFgc(GgtNIZ_o?7y)yS<X&+rg9|QaX0<z!+
+
+diff --git 2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/ApplicationRun.class 2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/ApplicationRun.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..8cc239d0965913b8c65ef4c6c0755f33b48958e8
+GIT binary patch
+literal 787
+zc$|$=O>fgc5Ph4bNorCW5-6090~eI$z={hOqe`uTlLZn%;lOF_Y|XazZnRz(`m=fh
+zao`8=qY$%>QH>NN_As+E^XARR?$2M}e*k!fM*+IH)5m^*ySUfK0YmSF(#jn%Y)uar
+z4Bf~qCBt5<w0u()iL~!Ul9Oi~n^fcrVU@QVXV-mFCBrmMO~Hi_JeQJ}E30&t=B8Tm
+z<JBrxsc_2Zca;t)qYz3n>`y<&XX1hqgwFWf`HZlxFKkAPlMP{pU~Vd#%Gb)*p8U=I
+z)Z-Zr=;~A<7phd$;<47o)es^*ijB>h_D-!R<Y!~gd18#?qH-oR`c!3=m3&@9PAJf-
+zLG@2I609dpb0xLoOI4=kLfT9IO8XtX{9{LTJRD*hJ%%U$x3E6$5AgsG8AjLZc$=Kb
+z)G^HdInBEN78Sj&tw<)*)>@-nlx4W-9X5|?w3A;PkD4|4=~^YCbvVRhbm)`$(*g6-
+zlI)YkNi)*hv#(%Rb$CFsS37sHLvpwVAixdMJ7n)R$<J#tU@-2?zG3Ubb$&n^*dx@a
+V#WBE5@_EdtmbWl&uoKd^f#0{n)S3VQ
+
+diff --git 2020618-srpingcloud-provider-8083/target/classes/com/aaa/lee/springcloud/ApplicationRun8083.class 2020618-srpingcloud-provider-8083/target/classes/com/aaa/lee/springcloud/ApplicationRun8083.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..c7b7dfb8da47778aa572e96320d3016479287cda
+GIT binary patch
+literal 897
+zc$|$=O>fgc5Ph5Pnn2qWQp!hxTZm8=goG*uRcZ~K0!RdfLr-gGYqr?C(Rv-|&*B8)
+zzz^U@A;ylOmIxA-Jfqop^JezV{`mRrJAg;H>!E?`ZR~ltftzjIVrV^8TDe1p`r!VI
+zq2ZgkWZ0Z2Enj6xAnjWb#B|b|m{7zsVO1WNhYj~$r3?=yp-H$9g2z(wbYYc_!q{YU
+zezaJ`Dilr`{U*}~4-X!XsVWglGxP^1lQXfTBB3Kbb$Qjem_gWxSa;T>8N8{<Y$#u-
+zy#Mas{G+^vVUI$m5;;?;qEU~uHm-mX@!`bSs2uauibQ@i_5%-$aa?51ghrpLD6^7J
+z3&=4gDt%~%<Fy2<8;7xy+VQzcL$j3joIlsOR?mLNevv1VVL_6d2gI6|WL*52lfM*;
+zg|yR9<Q<z!5odJaeG+;^LXSx3QAOxcQlPtNqD9pIzm7I;cd?H<3|kjszYfl1=!oZ^
+zI<1tc(9!#`8QEY^S(+b<G##(o@_GS{cJh<sez|~Lw@M3tl^)|BYV?fruLhRim~5LO
+zPM(o(4!?kXF47&ct>SPK8)UmH06bhGzd`ZkviM0s26TG0;aAk(UDSKzfo($dDjXeL
+cA<i7LRoHFH0)5o6L;foL*9g}?0ZXy_3uZ|6hX4Qo
+
+diff --git 2020618-srpingcloud-provider-8083/target/classes/com/aaa/lee/springcloud/controller/BookController.class 2020618-srpingcloud-provider-8083/target/classes/com/aaa/lee/springcloud/controller/BookController.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..63e49b7a1daee7f987c6e9a63fb1e9d044ac157b
+GIT binary patch
+literal 1076
+zc$}3}T~8D-6g}l@*kuG<M8R+TTtFxUA4njZAc?+=Xjro^KA6sISqq((bUG0Jl^TPI
+z5B>mul=056S(gY8Jj~qby{G4%d#3&U=jSf~t5~UG6!$B5fQO@)tKtzJR}kPy6;JUj
+z!1DlghOyY%gQj#xDv=CJQDRdrgy33Ao*g=6I*GP<n`dVb{^}omgJE_zH(sT(r7{(3
+zxn+#?!YgYshV{t0PM2fPiBuk2cfeyQOvd*_;;lR3qPKx><=!4EC)-3jvZ;*n4Tiz`
+ze2Zad+qOyEM5K(|$<tW64}!We)FPV*-4ad}>uz$$e^%6f?b1;aYrL~sOIJ>_-CI)U
+z@l0x&_${rA64BJ^^U=OI5<K@x^GIc$P?e_Y7~ykA?Hd09HZSd*(j1yMPqI&>VNZ27
+z8btQ;LZ6Oh%wuKR{T98E{;fDXBphuUJ`y@F#^pk5hHBI1E|ITQVZqe-xt0rkm;I27
+z8tux=_t_HS8pZ?6hgiTObzEOrUkmUe#1fW6R8S4TL)^eL!|IhyXP7MQ)53K4yLg}6
+zKbIo6yiDmR*qjQ}XI?AI-xIfQdM8CnZcJT}W(W!aUK`q1kNPNmp=+Z!T8mdW@0g?8
+zGfG#BVW60r;ux()D25aVD3VX~o}d+{$S4jk`~dq}mM6Pl(ARZ(hi3rPFjbP0ffy_|
+zH%c<XeZxR)@DxJ}-!XiOkuN=-Dn($1<jnSQO?J6%mbhD`yh6|nJ+mLdGTf&8ow9nj
+IC;lGr7bmG2egFUf
+
+diff --git 20200616-springcloud-management/20200616-springcloud-service/target/classes/com/aaa/lee/springcloud/service/BookService.class 20200616-springcloud-management/20200616-springcloud-service/target/classes/com/aaa/lee/springcloud/service/BookService.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..d765ca99805793378323212aac153c9a27897516
+GIT binary patch
+literal 829
+zc$}3|O>Yx15PeSbLAId{DPQHQa7$Yis}cvKR*?b{rv)T}az)O@S=@T<$o96%zXAyf
+z!GRyZk3!5YOB5A)=wUq`@0&Mop62JT?>_(>;&Frq?zU0K_B!t2ehUv;c*xN83;!Xp
+zW~S2DVm_CS;V@2Y#)S}EOUeD*DU&AJ=2M=P2tK+{a>TIxE;m7Ca;&_XXgM^-1`(7s
+zp5b|HU0U(XoXF(4b*FqHh4FkQl3?9}i)8^H=E0sTC#OW)JXS`90mE8<cg#?KX{VB5
+zGgd~v$+L-c?*(;Z=*2b>dMunO^6If3J}PQ|aOpT+x-*qX{=(YR(Vsi@-0)J%Bn-7K
+z-ie^s-;Gbinc#U)n#alqLbXRKH6rAW8V&vd9A9oBO`umCJQ@&LG_tu%<SSLk?yksr
+zTF^4||LdR+(n%W@bIJdz?;yf@2TinEc+|lTdJOwl7@xYAgJ@w={&sRgJ}~ert^=8~
+zv=C2d;~KPq47EZQ#cPx`DYhxrD3W42JCt#XjACQ&E7<4q_w@=40&J9L3BV@0CFu?H
+o2vrn6tBRw&FQ|RP8pEdx3|lJ<QN^%TVs6rRtGwM_%DV&n22{+~7ytkO
+
+diff --git 20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/ApplicationRun.class 20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/ApplicationRun.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..1c7096c29273e28b1cc6800e8a87376334318b3b
+GIT binary patch
+literal 714
+zc$|$=%TC)s6g?9{65IeG;Za&PY*5Ieqi)!^LZXpaSs)RVF1i|<!3@|l(RkeQTdb(M
+z=m+posMn4qj1(lixYze}&OI~p^!)c9fUnr|(8OjNTOPKt)5b@J);Fb<J7!oK9!?pW
+zV{;`L)&r&GS)PW{UWzcGOg}J@NT$N7BCe86ccU_fVGx;=3n6$SCC_G7={QPEe#K8_
+zvqVM0DWflP?bAdmlxEl-{tRx#FB%X!<`Y*;_$9xvF(D2Xlo`B<$!#Q0Rlz-Yjs2zQ
+zXV|4*r&2jpnW7a>v^K76A<*N%*tlBn+KN>EHujE(#yBo=XCkAoRh(PNCuPfbD%3dq
+zE|$?^IC!7dHg>!CgwG7U7bWN6t&AMQ=*>mu)HNu&7@Ly~hqV(KCnC%IMMt<$A}Mq7
+z-tlpzu(-S$#du!!v5yA5kK${96>7=0DdOZA`Q_0g*h5+FkZqO8RjiQh&Kuz21Njw-
+pSF7Qp5)A0{8>2s1`tdUFkq3IzwNb<9U=8bKPp`Ba=vQ0=;6F{5x=;WB
+
+diff --git 2020618-srpingcloud-provider-8082/target/classes/com/aaa/lee/springcloud/controller/BookController.class 2020618-srpingcloud-provider-8082/target/classes/com/aaa/lee/springcloud/controller/BookController.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..fec51ef5e53ee6880e1a69c060a3577591c43f5c
+GIT binary patch
+literal 1076
+zc$}3}%T5$Q6g|bOnW2So5D?$^96%^g7bK8LkVH4_BaC6=!c_MZV?lKlsji0bS85C<
+zF8lyL%6Pk(j6;M4i|*TX@2PXoJze$t&(B`~R<TmWDDG5n7xzXnSH*ois35?@Djwl+
+zfF}VO3}dmi`z`4XRU#RdqQs_L2*I_KJUej8bP{dzHqTBW{N+FRI>YRCZoEq6j>=T5
+z<)$&#3$Lun7}g@|I$e%kCsKK2-9C?{Fd5$!iMQ^Ui{1vlnR|ProNN>A$c8e?HyH*S
+z^E(VfTeeN&CL(3z+dPe>`yi+rLp`#I&^yAZV%<#+`Ok{lKfiF4#2W9c*3y;JZ1tAZ
+zc|4O^CVo@vqC_<H#(cCV4h7G>(mYa`Csd`SI!5^1QM=}UfQ<_~r!<G=t>f$yY1mbr
+z^(K+MIM=5m8S_|~cE3fhrGFz14hTovh7X0#i*dQonxWdVxl80LRah{2cCO_@-$g&<
+zyhhtH^L@62xPtKj^C1?nNFCQ!)}94;8e$2{Au6Z_;32MIiedHArZdz^`?N3}{x04l
+z_s^urEiY3#3O1+0)T!6X^7q8;Ti!{Lk{grfq#1%jfY*lhHKIOBU+7vdj@IHO&O7Gl
+z_KeciVi+i<rZ`5c5sD$j0gB`ky(ehJDKd(~3qQcVmgQO(4EnlC@9-3WIwng}G7y91
+z=4MGoxNjJ!51wFX;X8&;F!H6xQ>6$@lbo48u3DFCy2Q<t@(MxM>6!fqmf;5FZ<f_t
+IJ@L1Jza+jIc>n+a
+
+diff --git 20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/controller/BookController.class 20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/controller/BookController.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..c3d3c4c1c88a0cefb78c1ee2d8aea3c7b27c898b
+GIT binary patch
+literal 1078
+zc$}3}+fGwK6kXFR)LO9hhKh>Ug3*!a1EENQB$$|kCY12PgPEQVWnenf%$Wn>uQV~5
+zm}q?Vqm28UHdrow;9+KGUuNw!YtQ`o`{NgYdDKhDV|pA#+#SQcBJLM4Q^Es0EaDME
+z*~!Rn%5F~!FBzT()^&K)bINpfoao9!>-PDfZ1GSlX*}N;DsM1MZN$c_uG~_QYH7J*
+zjP=4RYa)h)bFo@dn27I)&|7!J#qj~Y5_@~7oNN<pVM!U~ml?A4*)4|Ls%;awi9i|o
+zA?~)M+Z5D|p&Hmw=q=$?;tzs3zpJSIt01&pE`;D($^nf~+qlg`YrL~sOUK_@yT5wu
+zQs+t}wG91=)=7$Bs`c4mPaFsyd!>1xB2QK0P1P~N$Bx=9pD9=x*||&i(7bsReIgD!
+zs?%5|u-79sZz<Crmgt@I>!R1AIy#m=5IRn-%Z1hqrKXKtDA!aXLG9$dUL^cR4dlE=
+z$&`m=DWi<bWsG5*Ccf)^Z;^AID8FkXzqs&nVZP6ya#9C|$uyva>F|%OJ<_#^$7MXh
+zQ-=8qPlw^z1s*3o?T++o*7X}RysroU*))9u(in=YY7s?^?cg-y#_ZV;X6QHN>31<?
+z5>?2S$SaV&L^eZ~1f#t|9w*Dl=I6eHeM!?3gJPhHN!rW(0$d?K0j=RGvgzSB$fdd3
+z+*f3(*=jEP6Zvl_{6_BcDX8fosM-MPT3T~GWmloh4O%z1!6Hmi{8pO1ea!t1@DHFP
+BCA<It
+
+diff --git 20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/config/RestConfig.class 20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/config/RestConfig.class
+new file mode 100644
+index 0000000000000000000000000000000000000000..6a7a4d9d5cfc5ba26c143f17e68ba03257101249
+GIT binary patch
+literal 657
+zc$}3{%T59@6g}lFq9DGP?m(lBF5F;D)Wj9hL<xz@G8C-Nw4`*z&(al%CVqe)WxP`n
+zjd7t}+{fuXr>E`f+tUkxU91(6#Zn&2MWm9vlE*4T?m%hf4jIz5dYd70V!D!{+*Deg
+z#ZgDvmgt0pRGTIcVOv<0^b;`SuGNrXs~MPx3n6$YB_9r~()}PbahC^1_f(%>$e}y&
+zWrLw)scXq-5DG^cyjE`-+n>;SRzz}S>@6S34i7>lwe$2(0tu{N#M-Gyw$)IPjU%m%
+z6HXaTR<?iDA{$QLJ1(Z9{8$Q2TE$Bf+d!VG<T~XqpF20=PB85MRqlfoTi-QG$RSVf
+z@{fBl)c^d543)$l4~6dY^UjS795#@l?@d+;EIFQHfjUl^QO<6T!5;ng48@!W=TW3s
+u`WV10RiJu~@RTR-c`=~yjMUW_>4zWu>NkF2!Y@yDD}Hvt$LbVa1l|GmT&G?D
+

@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="3b304ec8-b7a4-4b53-a6c8-1595ba1b02b6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/$CACHE_FILE$" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/springcloud.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/src/main/resources/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/ApplicationRun.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/config/RestConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-consumer/target/classes/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/src/main/java/com/aaa/lee/springcloud/mapper/Sys_configMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/src/main/resources/mapper/Sys_configMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/target/classes/META-INF/20200616-springcloud-mapper.kotlin_module" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/target/classes/com/aaa/lee/springcloud/mapper/Sys_configMapper.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-mapper/target/classes/mapper/Sys_configMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-model/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-model/src/main/java/com/aaa/lee/springcloud/model/Sys_config.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-model/target/classes/META-INF/20200616-springcloud-model.kotlin_module" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-model/target/classes/com/aaa/lee/springcloud/model/Sys_config.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-service/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-service/src/main/java/com/aaa/lee/springcloud/service/BookService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/20200616-springcloud-service/target/classes/com/aaa/lee/springcloud/service/BookService.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-management/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/src/main/resources/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/target/classes/com/aaa/lee/springcloud/ApplicationRun.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud-provider/target/classes/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200616-springcloud.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/java/com/aaa/lee/springcloud/ApplicationRun6081.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/src/main/resources/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/target/classes/com/aaa/lee/springcloud/ApplicationRun6081.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/20200617-eureka-6081/target/classes/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/java/com/aaa/lee/springcloud/ApplicationRUn6082.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/src/main/resources/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/target/classes/com/aaa/lee/springcloud/ApplicationRUn6082.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6082/target/classes/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/java/com/aaa/lee/springcloud/ApplicationRun6083.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/src/main/resources/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/target/classes/com/aaa/lee/springcloud/ApplicationRun6083.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/2020618-eureka-6083/target/classes/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200617-springcloud-eureka-management/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200622-srpingcloud-feign/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/20200622-srpingcloud-feign/src/main/java/com/aaa/lee/FeginApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/ApplicationRun.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/config/RestConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/src/main/resources/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/ApplicationRun.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/config/RestConfig.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-springcloud-consumer-ribbon/target/classes/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/ApplicationRun8082.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/src/main/resources/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/target/classes/com/aaa/lee/springcloud/ApplicationRun8082.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8082/target/classes/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/ApplicationRun8083.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/src/main/java/com/aaa/lee/springcloud/controller/BookController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/src/main/resources/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/target/classes/com/aaa/lee/springcloud/ApplicationRun8083.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/target/classes/com/aaa/lee/springcloud/controller/BookController.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/2020618-srpingcloud-provider-8083/target/classes/config/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/unnamed.patch" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="AnnotationType" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="WARN_ABOUT_CRLF" value="false" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\maven\repository" />
+        <option name="mavenHome" value="F:/GamesforExcl/apache-maven-3.5.3" />
+        <option name="userSettingsFile" value="F:\GamesforExcl\apache-maven-3.5.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+        <option name="jdkForImporter" value="1.8" />
+        <option name="vmOptionsForImporter" value="-Xmx768m" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="1.8" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1dNc3qNLfT6Hxo28YkfgKNtonre" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../2020618springcloud" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.aaa.lee.springcloud" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Element\springcloud\2020618-srpingcloud-provider-8082\src\main\resources\config" />
+      <recent name="D:\Element\springcloud\20200616-springcloud-management\20200616-springcloud-mapper\src\main\resources\mapper" />
+      <recent name="D:\Workspace\IDEA_Workspace\20200616-springcloud\20200616-springcloud-management\20200616-springcloud-mapper\src\main\resources\mapper" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.aaa.lee.springcloud.mapper" />
+      <recent name="com.aaa.lee.springcloud.model" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="20200616-springcloud-management.20200616-springcloud-service.src.main.java.com.aaa.lee.springcloud.service" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.ApplicationRun">
+    <configuration name="ApplicationRun" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.aaa.lee.springcloud.ApplicationRun" />
+      <module name="20200616-springcloud-provider" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ApplicationRun" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="2020618-springcloud-consumer-ribbon" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.aaa.lee.springcloud.ApplicationRun" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ApplicationRun6081" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="20200617-eureka-6081" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.aaa.lee.springcloud.ApplicationRun6081" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ApplicationRun8082" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="2020618-srpingcloud-provider-8082" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.aaa.lee.springcloud.ApplicationRun8082" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ApplicationRun8083" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="2020618-srpingcloud-provider-8083" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.aaa.lee.springcloud.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.aaa.lee.springcloud.ApplicationRun8083" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.ApplicationRun" />
+        <item itemvalue="Spring Boot.ApplicationRun6081" />
+        <item itemvalue="Spring Boot.ApplicationRun8083" />
+        <item itemvalue="Application.ApplicationRun" />
+        <item itemvalue="Spring Boot.ApplicationRun8082" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <option name="contentProportion" value="0.2683461" />
+          <treeState>
+            <expand>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+              <path>
+                <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+                <item name="Spring Boot" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+                <item name="Finished" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              </path>
+            </expand>
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\Seven Lee\AppData\Roaming\Subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3b304ec8-b7a4-4b53-a6c8-1595ba1b02b6" name="Default Changelist" comment="" />
+      <created>1592268794154</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1592268794154</updated>
+      <workItem from="1592268796422" duration="7559000" />
+      <workItem from="1592289562665" duration="2135000" />
+      <workItem from="1592291763329" duration="7624000" />
+      <workItem from="1592305265594" duration="5573000" />
+      <workItem from="1592353831852" duration="1616000" />
+      <workItem from="1592375134637" duration="12961000" />
+      <workItem from="1592394091483" duration="5321000" />
+      <workItem from="1592447975106" duration="17000" />
+      <workItem from="1592448008731" duration="123000" />
+      <workItem from="1592461661468" duration="8033000" />
+      <workItem from="1592476447906" duration="4136000" />
+      <workItem from="1592526256390" duration="723000" />
+      <workItem from="1592791394591" duration="1287000" />
+      <workItem from="1592812856152" duration="408000" />
+    </task>
+    <task id="LOCAL-00001">
+      <created>1592813215165</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1592813215166</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="LAST_COMMIT_MESSAGE" value="" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="77" y="179" key="#Project_Structure" timestamp="1592792005496">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="77" y="179" key="#Project_Structure/0.0.1920.1040@0.0.1920.1040" timestamp="1592792005496" />
+    <state x="476" y="96" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592812937042">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592276952587" />
+    <state x="476" y="96" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592812937042" />
+    <state x="1147" y="325" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1592466520242">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1147" y="325" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1592466520242" />
+    <state x="355" y="279" width="977" height="273" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes" timestamp="1592276977568">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="355" y="279" width="977" height="273" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592276977568" />
+    <state x="882" y="334" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1592394369183">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="882" y="334" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592394369183" />
+    <state x="711" y="114" key="CommitChangelistDialog2" timestamp="1592813215174">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="711" y="114" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1592813215174" />
+    <state x="827" y="228" key="FileChooserDialogImpl" timestamp="1592813137990">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592273000021" />
+    <state x="827" y="228" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1592813137990" />
+    <state width="1351" height="304" key="GridCell.Tab.0.bottom" timestamp="1592468524509">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
+    <state width="1351" height="304" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524509" />
+    <state width="1351" height="304" key="GridCell.Tab.0.center" timestamp="1592468524509">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
+    <state width="1351" height="304" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524509" />
+    <state width="1351" height="304" key="GridCell.Tab.0.left" timestamp="1592468524509">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120598" />
+    <state width="1351" height="304" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524509" />
+    <state width="1351" height="304" key="GridCell.Tab.0.right" timestamp="1592468524509">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
+    <state width="1351" height="304" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524509" />
+    <state width="1351" height="304" key="GridCell.Tab.1.bottom" timestamp="1592468524510">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.1.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
+    <state width="1351" height="304" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524510" />
+    <state width="1351" height="304" key="GridCell.Tab.1.center" timestamp="1592468524510">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.1.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
+    <state width="1351" height="304" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524510" />
+    <state width="1351" height="304" key="GridCell.Tab.1.left" timestamp="1592468524510">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.1.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
+    <state width="1351" height="304" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524510" />
+    <state width="1351" height="304" key="GridCell.Tab.1.right" timestamp="1592468524510">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.1.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
+    <state width="1351" height="304" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1592468524510" />
+    <state width="1250" height="203" key="GridCell.Tab.2.bottom" timestamp="1592277120600">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.2.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120600" />
+    <state width="1250" height="203" key="GridCell.Tab.2.center" timestamp="1592277120600">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.2.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120600" />
+    <state width="1250" height="203" key="GridCell.Tab.2.left" timestamp="1592277120599">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.2.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120599" />
+    <state width="1250" height="203" key="GridCell.Tab.2.right" timestamp="1592277120600">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1250" height="203" key="GridCell.Tab.2.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592277120600" />
+    <state x="830" y="196" key="SettingsEditor" timestamp="1592813023729">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="830" y="196" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1592813023729" />
+    <state x="640" y="344" key="com.intellij.ide.util.TipDialog" timestamp="1592812862222">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="640" y="344" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592812862222" />
+    <state x="607" y="256" key="new project wizard" timestamp="1592791492115">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="356" y="81" key="new project wizard/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1592272098478" />
+    <state x="607" y="256" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1592791492115" />
+    <state x="696" y="390" width="886" height="535" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1592378069156">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="696" y="390" width="886" height="535" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1592378069156" />
+    <state x="1078" y="230" width="672" height="678" key="search.everywhere.popup" timestamp="1592376038075">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="1078" y="230" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1592376038075" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/springcloud$ApplicationRun8082.ic" NAME="ApplicationRun8082 Coverage Results" MODIFIED="1592465017779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.aaa.lee.springcloud.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/springcloud$ApplicationRun6081.ic" NAME="ApplicationRun6081 Coverage Results" MODIFIED="1592466632673" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>com.aaa.lee.springcloud.*</FILTER>
+    </SUITE>
+  </component>
+</project>
